@@ -28,3 +28,6 @@ I:\c#Test\shipTest\shipTest\obj\Debug\MainWindow.baml
 I:\c#Test\shipTest\shipTest\obj\Debug\shipTest.g.resources
 I:\c#Test\shipTest\shipTest\obj\Debug\shipTest.Properties.Resources.resources
 I:\c#Test\shipTest\shipTest\obj\Debug\Galaga.csproj.GenerateResource.Cache
+C:\Users\1532444\Source\Repos\Galaga\shipTest\shipTest\bin\Debug\shipTest.exe.config
+C:\Users\1532444\Source\Repos\Galaga\shipTest\shipTest\obj\Debug\shipTest.exe
+C:\Users\1532444\Source\Repos\Galaga\shipTest\shipTest\obj\Debug\shipTest.pdb
