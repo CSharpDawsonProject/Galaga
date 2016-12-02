@@ -678,7 +678,7 @@ namespace shipTest
             myCanvas.Children.Remove(ennemy);
             ennemy.Width = 30;
             ennemy.Height = 30;
-            ennemy.Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(monsterPath("enemyD1.bmp"), UriKind.Absolute)) };
+            ennemy.Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(monsterPath("enemyD1.png"), UriKind.Absolute)) };
             myCanvas.Children.Add(ennemy);
             
 
@@ -694,7 +694,7 @@ namespace shipTest
 
             rec.Width = 30;
             rec.Height = 30;*/
-            ennemy.Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(monsterPath("enemyD2.bmp"), UriKind.Absolute)) };
+            ennemy.Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(monsterPath("enemyD2.png"), UriKind.Absolute)) };
 
             //myCanvas.Children.Add(rec);
             return ennemy;
@@ -755,7 +755,7 @@ namespace shipTest
                 if (i < 20)
                 { //TWO LINES OF BLUE
                     enemyList.Add(new Rectangle());
-                    enemyList.ElementAt(i).Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(monsterPath("enemyD1.bmp"), UriKind.Absolute)) };
+                    enemyList.ElementAt(i).Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(monsterPath("enemyD1.png"), UriKind.Absolute)) };
 
                     myCanvas.Children.Add(enemyList.ElementAt(i));
                     enemyList.ElementAt(i).Width = 30;
@@ -795,7 +795,7 @@ namespace shipTest
                 { //TWO LINES OF RED
                     
                     enemyList.Add(new Rectangle());
-                    enemyList.ElementAt(i).Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(monsterPath("enemyA1.bmp"), UriKind.Absolute)) };
+                    enemyList.ElementAt(i).Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(monsterPath("enemyA1.png"), UriKind.Absolute)) };
                     myCanvas.Children.Add(enemyList.ElementAt(i));
                     enemyList.ElementAt(i).Width = 30;
                     enemyList.ElementAt(i).Height = 30;
@@ -833,7 +833,7 @@ namespace shipTest
                 { //4 GREEN
                     //Console.WriteLine(i);
                     enemyList.Add(new Rectangle());
-                    enemyList.ElementAt(i).Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(monsterPath("enemyB1.bmp"), UriKind.Absolute)) };
+                    enemyList.ElementAt(i).Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(monsterPath("enemyB1.png"), UriKind.Absolute)) };
                     myCanvas.Children.Add(enemyList.ElementAt(i));
                     enemyList.ElementAt(i).Width = 30;
                     enemyList.ElementAt(i).Height = 30;

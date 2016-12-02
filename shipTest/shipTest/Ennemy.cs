@@ -35,7 +35,7 @@ namespace shipTest
 
             bullet.Add(new Rectangle());
 
-            bullet.ElementAt(bullet.Count - 1).Fill = new ImageBrush{ImageSource = new BitmapImage(new Uri(monsterPicPath("enemyBullet.bmp"),UriKind.Absolute))};
+            bullet.ElementAt(bullet.Count - 1).Fill = new ImageBrush{ImageSource = new BitmapImage(new Uri(monsterPicPath("enemyBullet.png"),UriKind.Absolute))};
 
             bullet.ElementAt(bullet.Count - 1).Height = 25;
             bullet.ElementAt(bullet.Count - 1).Width = 22;

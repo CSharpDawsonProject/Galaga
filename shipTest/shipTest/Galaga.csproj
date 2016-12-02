@@ -106,6 +106,18 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Ressources\enemyA1.png" />
+    <Resource Include="Ressources\enemyA2.png" />
+    <Resource Include="Ressources\enemyB1.png" />
+    <Resource Include="Ressources\enemyB2.png" />
+    <Resource Include="Ressources\enemyC1.png" />
+    <Resource Include="Ressources\enemyC2.png" />
+    <Resource Include="Ressources\enemyD1.png" />
+    <Resource Include="Ressources\enemyD2.png" />
+    <Resource Include="Ressources\enemyE1.png" />
+    <Resource Include="Ressources\enemyE2.png" />
+    <Resource Include="Ressources\enemyF1.png" />
+    <Resource Include="Ressources\enemyBullet.png" />
     <Content Include="Ressources\explosionSound.wav" />
     <Content Include="Ressources\GalagaRemix.mp3" />
     <Content Include="Ressources\GalagaRemix.wav" />

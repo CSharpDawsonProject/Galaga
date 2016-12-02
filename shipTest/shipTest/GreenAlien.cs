@@ -42,7 +42,7 @@ namespace shipTest
             if(health == 1)
             {
                 ennemy.Fill = new ImageBrush{ ImageSource =
-                                    new BitmapImage(new Uri(monsterPicPath("enemyC1.bmp"),
+                                    new BitmapImage(new Uri(monsterPicPath("enemyC1.png"),
                                                                             UriKind.Absolute))};              
             }
 
@@ -62,14 +62,14 @@ namespace shipTest
                 if (sprite)
                 {
                     ennemy.Fill = new ImageBrush{ ImageSource =
-                                    new BitmapImage(new Uri(monsterPicPath("enemyB1.bmp"),
+                                    new BitmapImage(new Uri(monsterPicPath("enemyB1.png"),
                                                                             UriKind.Absolute))};
                     sprite = false;
                 }
                 else
                 {
                     ennemy.Fill = new ImageBrush{ImageSource =
-                                    new BitmapImage(new Uri(monsterPicPath("enemyB2.bmp"),
+                                    new BitmapImage(new Uri(monsterPicPath("enemyB2.png"),
                                                                             UriKind.Absolute))};
                     sprite = true;
                 }
@@ -79,14 +79,14 @@ namespace shipTest
                 if (sprite)
                 {
                     ennemy.Fill = new ImageBrush{ ImageSource =
-                                    new BitmapImage(new Uri(monsterPicPath("enemyC1.bmp"),
+                                    new BitmapImage(new Uri(monsterPicPath("enemyC1.png"),
                                                                             UriKind.Absolute))};
                     sprite = false;
                 }
                 else
                 {
                     ennemy.Fill = new ImageBrush{ImageSource =
-                                    new BitmapImage(new Uri(monsterPicPath("enemyC2.bmp"),
+                                    new BitmapImage(new Uri(monsterPicPath("enemyC2.png"),
                                                                             UriKind.Absolute))};
                     sprite = true;
                 }

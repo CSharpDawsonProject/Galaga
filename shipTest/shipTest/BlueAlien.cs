@@ -24,7 +24,7 @@ namespace shipTest
             ennemy.Height = 30;
             ennemy.Width = 30;
             ennemy.Fill = new ImageBrush { ImageSource = 
-                                new BitmapImage(new Uri(monsterPicPath("enemyD1.bmp"), 
+                                new BitmapImage(new Uri(monsterPicPath("enemyD1.png"), 
                                                                         UriKind.Absolute)) };
             point = 10;
             health = 1;
@@ -51,14 +51,14 @@ namespace shipTest
             if (sprite)
             {
                 ennemy.Fill = new ImageBrush { ImageSource = 
-                                new BitmapImage(new Uri(monsterPicPath("enemyD1.bmp"), 
+                                new BitmapImage(new Uri(monsterPicPath("enemyD1.png"), 
                                                                         UriKind.Absolute)) };
                 sprite = false;
             }
             else
             {
                 ennemy.Fill = new ImageBrush { ImageSource = 
-                                new BitmapImage(new Uri(monsterPicPath("enemyD2.bmp"), 
+                                new BitmapImage(new Uri(monsterPicPath("enemyD2.png"), 
                                                                         UriKind.Absolute)) };
                 sprite = true;
             }
