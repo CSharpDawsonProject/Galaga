@@ -17,6 +17,7 @@
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("sound/galaga_bonus.wav")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("sound/galaga_firing_sound.wav")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("sound/galaga_level_start_sound.wav")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("sound/grenade-sound.wav")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("sound/pickup.wav")]
 
 

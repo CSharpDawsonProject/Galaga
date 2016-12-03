@@ -129,6 +129,7 @@
     <Content Include="Sound\galaga_bonus.wav" />
     <Content Include="Sound\Galaga_Firing_Sound.wav" />
     <Content Include="Sound\Galaga_Level_Start_Sound.wav" />
+    <Content Include="Sound\Grenade-Sound.wav" />
     <Content Include="Sound\pickup.wav" />
   </ItemGroup>
   <ItemGroup>

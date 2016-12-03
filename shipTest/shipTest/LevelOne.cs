@@ -10,29 +10,71 @@ namespace shipTest
     class LevelOne : ILevel
     {
         List<Ennemy> enemy;
-        public LevelOne()
+        Canvas myCanvas;
+        bool nextStep = true;
+        double angle = 0;
+        double pos = 50;
+        public LevelOne(Canvas c)
         {
-
+            myCanvas = c;
 
         }
 
-        public double Height { get; private set; }
-        public double Width { get; private set; }
-
-        public List<Ennemy> run(Canvas myCanvas)
+        public List<Ennemy> run()
         {
 
             List<Ennemy> enemy = new List<Ennemy>();
-            enemy = normalGame(enemy, myCanvas);
+            enemy = normalGame(enemy);
 
             return enemy;
         }
 
-        public List<Ennemy> updateGame(List<Ennemy> enemy)
+        public List<Ennemy> updateGame(List<Ennemy> alien)
         {
-            enemy = updateRain(enemy);
+            
+            if (alien.Count != 0 && !nextStep)
+                alien = updateRain(alien);               
+            else
+                nextStep = true;
 
-            return enemy;
+            if (nextStep)
+            {
+                if(alien.Count == 0 && !nextStep)
+                alien = normalGame(alien);
+
+                alien = updateNextStep(alien);
+            }
+
+
+            return alien;
+        }
+
+        private List<Ennemy> updateNextStep(List<Ennemy> list)
+        {
+            double spaceBetween = 20;
+
+            for (int i = 0; i < list.Count; i++)
+            {
+
+                if (list.ElementAt(i) is BlueAlien)
+                {
+                    /*Canvas.SetLeft(list.ElementAt(i).getEnemy(),
+                        (Canvas.GetLeft(list.ElementAt(i).getEnemy())));
+                    Canvas.SetTop(list.ElementAt(i).getEnemy(),
+                        (Canvas.GetTop(list.ElementAt(i).getEnemy())) - (Math.Sin(angle -= 0.08) * 50));*/
+
+                    Canvas.SetLeft(list.ElementAt(i).getEnemy(), pos += 2);
+                    Canvas.SetTop(list.ElementAt(i).getEnemy(), ((150) + (Math.Sin(angle += 0.06) * 100)));
+
+                    if (angle > 13)
+                    {
+                        pos = 50;
+                        angle = 0;
+                    }
+                }
+            }
+        
+            return list;
         }
 
         private List<Ennemy> updateRain(List<Ennemy> list)
@@ -46,14 +88,14 @@ namespace shipTest
             return list;
         }
 
-        private List<Ennemy> normalGame(List<Ennemy> enemyList, Canvas myCanvas)
+        private List<Ennemy> normalGame(List<Ennemy> enemyList)
         {
             enemyList = new List<Ennemy>(40);
             myCanvas.Width = myCanvas.Width;
             myCanvas.Height = myCanvas.Height;
             int numEnnemy = 0;
             double spaceBetween = myCanvas.Width / 2 - 250;
-            double height = myCanvas.Height / 2.5;
+            double height = myCanvas.Height / 5;
 
             for (int i = 0; i < 40; i++)
             {

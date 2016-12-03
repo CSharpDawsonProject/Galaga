@@ -82,7 +82,7 @@ namespace shipTest
         List<Point> exploLoc;
         Rectangle pauseScreen = new Rectangle();
 
-        LevelOne lvl1 = new LevelOne();
+        LevelOne lvl1;
 
         public MainWindow()
         {
@@ -109,11 +109,12 @@ namespace shipTest
 
             //testC.Add(redAl);
 
-            ILevel lvl = new LevelOne();
+            lvl1 = new LevelOne(myCanvas);
+            
             
 
             exploLoc = new List<Point>();
-            testC = lvl1.run(myCanvas);
+            testC = lvl1.run();
 
             if(ennShoot.Count != testC.Count)
             for (int i = 0; i < testC.Count; i++)
@@ -287,10 +288,9 @@ namespace shipTest
 
             shootPause++;
             if (testC.Count == 0)
-                testC = lvl1.run(myCanvas);
+                testC = lvl1.run();
 
-
-
+           
             
 
             switch (currentKey)
@@ -385,7 +385,7 @@ namespace shipTest
                 track.Add(0);
                 explosions.Add(createExplosion(exploLoc.ElementAt(exploLoc.Count - 1)));
 
-                System.Media.SoundPlayer music = new System.Media.SoundPlayer(soundPath("explosionSound.wav"));
+                System.Media.SoundPlayer music = new System.Media.SoundPlayer(soundPath("Grenade-Sound.wav"));
                 music.Play();
                 //music.PlayLooping();
                 
