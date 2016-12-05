@@ -26,7 +26,7 @@ namespace shipTest
             ennemy.Height = 30;
             ennemy.Width = 30;
             ennemy.Fill = new ImageBrush { ImageSource =
-                               new BitmapImage(new Uri(monsterPicPath("enemyB1.bmp"),
+                               new BitmapImage(new Uri(monsterPicPath("enemyB1.png"),
                                                                         UriKind.Absolute))};
             point = 20;
             health = 2;
@@ -96,6 +96,11 @@ namespace shipTest
         public override Rectangle getEnemy()
         {
             return ennemy;
+        }
+
+        public override int getHealth()
+        {
+            return health;
         }
     }
 }

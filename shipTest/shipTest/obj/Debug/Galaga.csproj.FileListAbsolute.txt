@@ -76,3 +76,17 @@ C:\Users\Denis Lebedev\Source\Repos\Galaga\shipTest\shipTest\obj\Debug\MainWindo
 C:\Users\Denis Lebedev\Source\Repos\Galaga\shipTest\shipTest\obj\Debug\shipTest.g.resources
 C:\Users\Denis Lebedev\Source\Repos\Galaga\shipTest\shipTest\obj\Debug\shipTest.Properties.Resources.resources
 C:\Users\Denis Lebedev\Source\Repos\Galaga\shipTest\shipTest\obj\Debug\Galaga.csproj.GenerateResource.Cache
+C:\Users\1532444\Source\Repos\Galaga\shipTest\shipTest\bin\Debug\shipTest.exe
+C:\Users\1532444\Source\Repos\Galaga\shipTest\shipTest\bin\Debug\shipTest.pdb
+C:\Users\1532444\Source\Repos\Galaga\shipTest\shipTest\obj\Debug\Galaga.csprojResolveAssemblyReference.cache
+C:\Users\1532444\Source\Repos\Galaga\shipTest\shipTest\obj\Debug\MainWindow.g.cs
+C:\Users\1532444\Source\Repos\Galaga\shipTest\shipTest\obj\Debug\App.g.cs
+C:\Users\1532444\Source\Repos\Galaga\shipTest\shipTest\obj\Debug\shipTest_Content.g.cs
+C:\Users\1532444\Source\Repos\Galaga\shipTest\shipTest\obj\Debug\shipTest_MarkupCompile.cache
+C:\Users\1532444\Source\Repos\Galaga\shipTest\shipTest\obj\Debug\shipTest_MarkupCompile.lref
+C:\Users\1532444\Source\Repos\Galaga\shipTest\shipTest\obj\Debug\MainWindow.baml
+C:\Users\1532444\Source\Repos\Galaga\shipTest\shipTest\obj\Debug\shipTest.g.resources
+C:\Users\1532444\Source\Repos\Galaga\shipTest\shipTest\obj\Debug\shipTest.Properties.Resources.resources
+C:\Users\1532444\Source\Repos\Galaga\shipTest\shipTest\obj\Debug\Galaga.csproj.GenerateResource.Cache
+C:\Users\1532444\Source\Repos\Galaga\shipTest\shipTest\bin\Debug\WpfAnimatedGif.dll
+C:\Users\1532444\Source\Repos\Galaga\shipTest\shipTest\bin\Debug\WpfAnimatedGif.xml

@@ -28,6 +28,8 @@ namespace shipTest
 
         abstract public Rectangle getEnemy();
 
+        abstract public int getHealth();
+
 
 
         public void shoot(Canvas myCanvas, Ennemy obj)

@@ -52,6 +52,10 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WpfAnimatedGif, Version=1.4.14.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WpfAnimatedGif.1.4.14\lib\net\WpfAnimatedGif.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -97,6 +101,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -119,11 +124,18 @@
     <Resource Include="Ressources\enemyE2.png" />
     <Resource Include="Ressources\enemyF1.png" />
     <Resource Include="Ressources\enemyBullet.png" />
+    <Resource Include="background.gif" />
+    <Resource Include="Ressources\explosion1.png" />
+    <Resource Include="Ressources\explosion2.png" />
+    <Resource Include="Ressources\explosion3.png" />
+    <Resource Include="Ressources\explosion4.png" />
+    <Resource Include="Ressources\explosion5.png" />
     <Content Include="Ressources\explosionSound.wav" />
     <Content Include="Ressources\GalagaRemix.mp3" />
     <Content Include="Ressources\GalagaRemix.wav" />
     <Resource Include="Ressources\GalagaRocket.png" />
     <Resource Include="Ressources\shipB.png" />
+    <Resource Include="Ressources\shipPB.png" />
     <Content Include="Sound\enemyShot.wav" />
     <Content Include="Sound\explosionSound.wav" />
     <Content Include="Sound\GalagaRemix.wav" />
@@ -132,26 +144,6 @@
     <Content Include="Sound\Galaga_Level_Start_Sound.wav" />
     <Content Include="Sound\Grenade-Sound.wav" />
     <Content Include="Sound\pickup.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Ressources\enemyA1.bmp" />
-    <Resource Include="Ressources\enemyA2.bmp" />
-    <Resource Include="Ressources\enemyB1.bmp" />
-    <Resource Include="Ressources\enemyB2.bmp" />
-    <Resource Include="Ressources\enemyBullet.bmp" />
-    <Resource Include="Ressources\enemyC1.bmp" />
-    <Resource Include="Ressources\enemyC2.bmp" />
-    <Resource Include="Ressources\enemyD1.bmp" />
-    <Resource Include="Ressources\enemyD2.bmp" />
-    <Resource Include="Ressources\enemyE1.bmp" />
-    <Resource Include="Ressources\enemyE2.bmp" />
-    <Resource Include="Ressources\enemyF1.bmp" />
-    <Resource Include="Ressources\enemyF2.bmp" />
-    <Resource Include="Ressources\explosion1.bmp" />
-    <Resource Include="Ressources\explosion2.bmp" />
-    <Resource Include="Ressources\explosion3.bmp" />
-    <Resource Include="Ressources\explosion4.bmp" />
-    <Resource Include="Ressources\explosion5.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

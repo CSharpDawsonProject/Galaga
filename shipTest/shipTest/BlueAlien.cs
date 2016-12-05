@@ -68,5 +68,10 @@ namespace shipTest
         {
             return ennemy;
         }
+
+        public override int getHealth()
+        {
+            return health;
+        }
     }
 }

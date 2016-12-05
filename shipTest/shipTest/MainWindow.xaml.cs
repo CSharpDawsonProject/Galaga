@@ -37,7 +37,7 @@ namespace shipTest
 
     public partial class MainWindow : Window
     {
-        static double newLocX =300;
+        static double newLocX;
         //static int newLocY;
         Image shoot = new Image();
         string currentKey = "";
@@ -83,6 +83,7 @@ namespace shipTest
         Rectangle pauseScreen = new Rectangle();
 
         LevelOne lvl1;
+        MediaPlayer shootSound;
 
         public MainWindow()
         {
@@ -106,6 +107,9 @@ namespace shipTest
 
             Canvas.SetTop(ship, myCanvas.Height/1.3);
 
+            Canvas.SetZIndex(bgImg, -1);
+            bgImg.Height = this.Height;
+            bgImg.Width = this.Width;
 
             //PLACE FOR TEST LIST CLASSES
 
@@ -137,8 +141,10 @@ namespace shipTest
             //Original position (Middle)
             ennemyPath = new Vector(Canvas.GetLeft(ship), (this.Height/2));
 
-            System.Media.SoundPlayer music = new System.Media.SoundPlayer(monsterPath("GalagaRemix.wav"));
+            System.Media.SoundPlayer music = new System.Media.SoundPlayer(soundPath("GalagaRemix.wav"));
             //music.Play();
+            MediaPlayer shootSound;
+            //shootSound.Open(soundPath(new Uri(soundPath("Galaga_Firing_Sound.wav"))));
 
             //!!!
             /*double oriL = Canvas.GetLeft(ennemyList.ElementAt(5));
@@ -188,7 +194,7 @@ namespace shipTest
                         explosions.ElementAt(i).Height = 40;
                         explosions.ElementAt(i).Width = 40;
                         explosions.ElementAt(i).Fill = new ImageBrush { ImageSource = 
-                                new BitmapImage(new Uri(monsterPath("explosion2.bmp"), 
+                                new BitmapImage(new Uri(monsterPath("explosion2.png"), 
                                                                         UriKind.Absolute)) };
                         
                         }
@@ -197,7 +203,7 @@ namespace shipTest
                         explosions.ElementAt(i).Height = 30;
                         explosions.ElementAt(i).Width = 30;
                         explosions.ElementAt(i).Fill = new ImageBrush { ImageSource = 
-                                new BitmapImage(new Uri(monsterPath("explosion3.bmp"), 
+                                new BitmapImage(new Uri(monsterPath("explosion3.png"), 
                                                                         UriKind.Absolute)) };
                         }
 
@@ -205,7 +211,7 @@ namespace shipTest
                         explosions.ElementAt(i).Height = 20;
                         explosions.ElementAt(i).Width = 20;
                         explosions.ElementAt(i).Fill = new ImageBrush { ImageSource = 
-                                new BitmapImage(new Uri(monsterPath("explosion4.bmp"), 
+                                new BitmapImage(new Uri(monsterPath("explosion4.png"), 
                                                                         UriKind.Absolute)) };
                         }
 
@@ -213,7 +219,7 @@ namespace shipTest
                         explosions.ElementAt(i).Height = 10;
                         explosions.ElementAt(i).Width = 10;
                         explosions.ElementAt(i).Fill = new ImageBrush { ImageSource = 
-                                new BitmapImage(new Uri(monsterPath("explosion5.bmp"), 
+                                new BitmapImage(new Uri(monsterPath("explosion5.png"), 
                                                                         UriKind.Absolute)) };
                         
                     }
@@ -256,7 +262,7 @@ namespace shipTest
             rec.Height = 50;
             rec.Width = 50;
             rec.Fill = new ImageBrush { ImageSource = 
-                                new BitmapImage(new Uri(monsterPath("explosion1.bmp"), 
+                                new BitmapImage(new Uri(monsterPath("explosion1.png"), 
                                                                         UriKind.Absolute)) };         
 
             Canvas.SetTop(rec, loc.Y);
@@ -345,6 +351,7 @@ namespace shipTest
                                             Canvas.GetLeft(ship) + 5, Canvas.GetRight(ship));
                     bulletList.Add(bullet);
 
+                    //shootSound.Play();
                 }
             }
 
