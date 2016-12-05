@@ -86,10 +86,12 @@ namespace shipTest
 
         public MainWindow()
         {
-           
+            //LevelThree lvl3 = new LevelThree();
+
             InitializeComponent();
 
             
+
              //THIS IS GETTING THE REAL SIZE OF THE SCREEN ~~
             double testW = SystemParameters.VirtualScreenWidth/2.5;
             double testH = SystemParameters.VirtualScreenHeight -50;
@@ -110,11 +112,12 @@ namespace shipTest
             //testC.Add(redAl);
 
             lvl1 = new LevelOne(myCanvas);
-            
+
             
 
             exploLoc = new List<Point>();
-            testC = lvl1.run();
+            //testC = lvl1.run();
+            test();
 
             if(ennShoot.Count != testC.Count)
             for (int i = 0; i < testC.Count; i++)
@@ -287,8 +290,12 @@ namespace shipTest
             }
 
             shootPause++;
+            Console.WriteLine(testC.Count);
             if (testC.Count == 0)
-                testC = lvl1.run();
+            {
+                test();
+                //testC = lvl1.run();
+            }
 
            
             
@@ -434,8 +441,8 @@ namespace shipTest
             if (ennemy != null)
             setLocation(ennemy, positionWave);
 
-            Canvas.SetLeft(tryPattern, tp += 2);
-            Canvas.SetTop(tryPattern, ((Y + 50) + (Math.Sin(angle += 0.06) * 100)));
+            //Canvas.SetLeft(tryPattern, tp += 2);
+            //Canvas.SetTop(tryPattern, ((Y + 50) + (Math.Sin(angle += 0.06) * 100)));
 
             //NEW PATTERN 50% WORKING outOfBound Sir ...
             /*Canvas.SetLeft(ennemyList.ElementAt(5), Canvas.GetLeft(ennemyList.ElementAt(5)) -0.5);
@@ -443,11 +450,11 @@ namespace shipTest
             */
 
             //Console.WriteLine(angle);
-            if (angle > 13)
+            /*if (angle > 13)
             {
                 tp = 25;
                 angle = 0;
-            }
+            }*/
 
             //circleEnemy = createMovement(circleEnemy);
 
@@ -498,7 +505,8 @@ namespace shipTest
                 }
 
             // testC = updateRain(testC);
-            testC = lvl1.updateGame(testC);
+            //testC = lvl1.updateGame(testC);
+            testC = updateNextStep(testC);
 
         }
 

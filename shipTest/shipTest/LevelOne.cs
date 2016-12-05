@@ -14,6 +14,7 @@ namespace shipTest
         bool nextStep = true;
         double angle = 0;
         double pos = 50;
+
         public LevelOne(Canvas c)
         {
             myCanvas = c;
@@ -63,12 +64,14 @@ namespace shipTest
                     Canvas.SetTop(list.ElementAt(i).getEnemy(),
                         (Canvas.GetTop(list.ElementAt(i).getEnemy())) - (Math.Sin(angle -= 0.08) * 50));*/
 
-                    Canvas.SetLeft(list.ElementAt(i).getEnemy(), pos += 2);
-                    Canvas.SetTop(list.ElementAt(i).getEnemy(), ((150) + (Math.Sin(angle += 0.06) * 100)));
+                    Canvas.SetLeft(list.ElementAt(0).getEnemy(), pos += 2);
+                    Canvas.SetTop(list.ElementAt(0).getEnemy(), ((200) + (Math.Sin(angle += 0.06) * 100)));
 
-                    if (angle > 13)
+                    if (pos > myCanvas.Width/0.5)
                     {
-                        pos = 50;
+                        Console.WriteLine("Angle: " + angle + "\tpos: " + pos + "\tGetTop: " + 
+                            Canvas.GetTop(list.ElementAt(0).getEnemy()) + "\tGetLeft: " + Canvas.GetLeft(list.ElementAt(0).getEnemy()));
+                        pos = 0;
                         angle = 0;
                     }
                 }

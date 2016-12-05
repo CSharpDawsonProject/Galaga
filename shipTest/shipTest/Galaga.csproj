@@ -61,6 +61,7 @@
     <Compile Include="EnnemyShoot.cs" />
     <Compile Include="ILevel.cs" />
     <Compile Include="LevelOne.cs" />
+    <Compile Include="LevelThree.cs" />
     <Compile Include="RedAlien.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
