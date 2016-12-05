@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
@@ -73,9 +74,7 @@ namespace shipTest
         List<EnnemyShoot> ennShoot = new List<EnnemyShoot>();
 
         List<Ennemy> testC = new List<Ennemy>();
-        List<RedAlien> redAl = new List<RedAlien>();
-        List<GreenAlien> greenAl = new List<GreenAlien>();
-        List<BlueAlien> blueAl = new List<BlueAlien>();
+
 
         List<int> track = new List<int>();
         List<Rectangle> explosions = new List<Rectangle>();
@@ -83,7 +82,9 @@ namespace shipTest
         Rectangle pauseScreen = new Rectangle();
 
         LevelOne lvl1;
-        MediaPlayer shootSound;
+        SoundPlayer shootSound;
+        SoundPlayer explosionSound;
+        MediaElement musicBG;
 
         public MainWindow()
         {
@@ -143,8 +144,18 @@ namespace shipTest
 
             System.Media.SoundPlayer music = new System.Media.SoundPlayer(soundPath("GalagaRemix.wav"));
             //music.Play();
-            MediaPlayer shootSound;
-            //shootSound.Open(soundPath(new Uri(soundPath("Galaga_Firing_Sound.wav"))));
+
+            explosionSound = new SoundPlayer(soundPath("Grenade-Sound.wav"));
+
+            shootSound = new SoundPlayer(soundPath("Galaga_Firing_Sound.wav"));
+
+            /*musicBG = new MediaElement();
+
+            musicBG.Source = new Uri(soundPath("bgSound.wav"));
+
+            musicBG.Play();*/
+
+            //musicBg.Play();
 
             //!!!
             /*double oriL = Canvas.GetLeft(ennemyList.ElementAt(5));
@@ -351,7 +362,7 @@ namespace shipTest
                                             Canvas.GetLeft(ship) + 5, Canvas.GetRight(ship));
                     bulletList.Add(bullet);
 
-                    //shootSound.Play();
+                    shootSound.Play();
                 }
             }
 
@@ -399,8 +410,9 @@ namespace shipTest
                 track.Add(0);
                 explosions.Add(createExplosion(exploLoc.ElementAt(exploLoc.Count - 1)));
 
-                System.Media.SoundPlayer music = new System.Media.SoundPlayer(soundPath("Grenade-Sound.wav"));
-                music.Play();
+
+                explosionSound.Play();
+                
                 //music.PlayLooping();
                 
                 

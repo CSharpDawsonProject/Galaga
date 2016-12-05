@@ -11,6 +11,7 @@
         <Image x:Name="ship" HorizontalAlignment="Left" Height="62" VerticalAlignment="Top" Width="61" Source="Ressources/shipB.png" Canvas.Left="292" Canvas.Top="317" Panel.ZIndex="1"/>
         <Label x:Name="scoreLb" Content="Score: " Canvas.Left="10" Canvas.Top="10" Width="107" Height="36" FontFamily="Yu Gothic" Foreground="#FFF5F4F4" Background="Black" FontSize="16"/>
         <Image x:Name="bgImg" gif:ImageBehavior.AnimatedSource="background.gif" Height="100" Width="100" RenderTransformOrigin="0.428,-0.28" Stretch="Fill"/>
+        <MediaElement x:Name="musicBg" Source="Sound/bgSound.wav" Height="100" Canvas.Left="933" Canvas.Top="86" Width="100"/>
 
 
     </Canvas>

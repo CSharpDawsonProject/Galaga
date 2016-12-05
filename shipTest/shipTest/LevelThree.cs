@@ -34,7 +34,7 @@ namespace shipTest
         {
             list = new List<Ennemy>();
             int left = -50;
-            int enemyPossible = (int)myCanvas.Width / 48;
+            int enemyPossible = (int)myCanvas.Width / 50;
             speed = 3;
 
             for (int i =0; i < (enemyPossible-2); i++)
@@ -66,7 +66,7 @@ namespace shipTest
 
             list = new List<Ennemy>();
             int left = -50;
-            int enemyPossible = (int)myCanvas.Width / 48;
+            int enemyPossible = (int)myCanvas.Width / 50;
             speed = 3;
 
             for(int i =0; i <enemyPossible; i++)
@@ -80,7 +80,7 @@ namespace shipTest
         private List<Ennemy> partA(List<Ennemy> enemyList)
         {
             enemyList = new List<Ennemy>();
-            int enemyPossible = (int)myCanvas.Width / 48;
+            int enemyPossible = (int)myCanvas.Width / 50;
             Console.WriteLine(enemyPossible + "\tx3: " + enemyPossible*3);
             int test = enemyPossible * 3;
             int left = -50;

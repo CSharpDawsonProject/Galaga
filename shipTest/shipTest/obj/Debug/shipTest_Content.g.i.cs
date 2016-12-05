@@ -11,6 +11,7 @@
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("ressources/explosionsound.wav")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("ressources/galagaremix.mp3")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("ressources/galagaremix.wav")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("sound/bgsound.wav")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("sound/enemyshot.wav")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("sound/explosionsound.wav")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("sound/galagaremix.wav")]

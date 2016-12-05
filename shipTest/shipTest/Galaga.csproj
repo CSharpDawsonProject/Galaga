@@ -136,6 +136,7 @@
     <Resource Include="Ressources\GalagaRocket.png" />
     <Resource Include="Ressources\shipB.png" />
     <Resource Include="Ressources\shipPB.png" />
+    <Content Include="Sound\bgSound.wav" />
     <Content Include="Sound\enemyShot.wav" />
     <Content Include="Sound\explosionSound.wav" />
     <Content Include="Sound\GalagaRemix.wav" />
