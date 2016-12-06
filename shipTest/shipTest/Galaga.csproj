@@ -66,6 +66,7 @@
     <Compile Include="ILevel.cs" />
     <Compile Include="LevelOne.cs" />
     <Compile Include="LevelThree.cs" />
+    <Compile Include="mainMenu.cs" />
     <Compile Include="RedAlien.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -130,12 +131,10 @@
     <Resource Include="Ressources\explosion3.png" />
     <Resource Include="Ressources\explosion4.png" />
     <Resource Include="Ressources\explosion5.png" />
-    <Content Include="Ressources\explosionSound.wav" />
-    <Content Include="Ressources\GalagaRemix.mp3" />
-    <Content Include="Ressources\GalagaRemix.wav" />
     <Resource Include="Ressources\GalagaRocket.png" />
     <Resource Include="Ressources\shipB.png" />
     <Resource Include="Ressources\shipPB.png" />
+    <Resource Include="Ressources\mainMenuBg.jpg" />
     <Content Include="Sound\bgSound.wav" />
     <Content Include="Sound\enemyShot.wav" />
     <Content Include="Sound\explosionSound.wav" />

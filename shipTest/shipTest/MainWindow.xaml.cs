@@ -73,7 +73,7 @@ namespace shipTest
 
         List<EnnemyShoot> ennShoot = new List<EnnemyShoot>();
 
-        List<Ennemy> testC = new List<Ennemy>();
+        List<Ennemy> enemyList = new List<Ennemy>();
 
 
         List<int> track = new List<int>();
@@ -92,99 +92,98 @@ namespace shipTest
 
             InitializeComponent();
 
-            
+            if (mainMenu())
+            {
 
-             //THIS IS GETTING THE REAL SIZE OF THE SCREEN ~~
-            double testW = SystemParameters.VirtualScreenWidth/2.5;
-            double testH = SystemParameters.VirtualScreenHeight -50;
-            
-            this.Height = testH;
-            myCanvas.Height = this.Height;
-            this.Width = testW;
-            myCanvas.Width = this.Width;
+                //THIS IS GETTING THE REAL SIZE OF THE SCREEN ~~                    
+                this.Height = SystemParameters.VirtualScreenHeight - 5;
+                myCanvas.Height = this.Height;
+                this.Width = SystemParameters.VirtualScreenWidth / 2.5;
+                myCanvas.Width = this.Width;
 
-            this.Top = testH/250;
-            this.Left = testW/2;
+                this.Top = this.Height / 250;
+                this.Left = this.Width / 2;
 
-            Canvas.SetTop(ship, myCanvas.Height/1.3);
+                Canvas.SetTop(ship, myCanvas.Height / 1.3);
 
-            Canvas.SetZIndex(bgImg, -1);
-            bgImg.Height = this.Height;
-            bgImg.Width = this.Width;
+                Canvas.SetZIndex(bgImg, -1);
+                bgImg.Height = this.Height;
+                bgImg.Width = this.Width;
 
-            //PLACE FOR TEST LIST CLASSES
+                //PLACE FOR TEST LIST CLASSES
 
-            //testC.Add(redAl);
+                //testC.Add(redAl);
 
-            lvl1 = new LevelOne(myCanvas);
-
-            
-
-            exploLoc = new List<Point>();
-            //testC = lvl1.run();
-            test();
-
-            if(ennShoot.Count != testC.Count)
-            for (int i = 0; i < testC.Count; i++)
-                ennShoot.Add(new EnnemyShoot(getLocation(testC.ElementAt(i).getEnemy()), myCanvas));
-            //INSTANCEOF ~ like java
-            //if (testC.ElementAt(0) is BlueAlien)
+                lvl1 = new LevelOne(myCanvas);
 
 
 
-            //ennemyList = normalGame(ennemyList);
-            //ennemyList = makeItRain(ennemyList);
-            circleEnemy = new Rectangle();
-            tryPattern = createMovement(circleEnemy);
-            circleEnemy = createMovement(circleEnemy);
-            ennemy = new Rectangle();
-            testIndex = 0;
-            //Original position (Middle)
-            ennemyPath = new Vector(Canvas.GetLeft(ship), (this.Height/2));
+                exploLoc = new List<Point>();
+                //testC = lvl1.run();
+                test();
 
-            System.Media.SoundPlayer music = new System.Media.SoundPlayer(soundPath("GalagaRemix.wav"));
-            //music.Play();
+                if (ennShoot.Count != enemyList.Count)
+                    for (int i = 0; i < enemyList.Count; i++)
+                        ennShoot.Add(new EnnemyShoot(getLocation(enemyList.ElementAt(i).getEnemy()), myCanvas));
+                //INSTANCEOF ~ like java
+                //if (testC.ElementAt(0) is BlueAlien)
 
-            explosionSound = new SoundPlayer(soundPath("Grenade-Sound.wav"));
 
-            shootSound = new SoundPlayer(soundPath("Galaga_Firing_Sound.wav"));
 
-            /*musicBG = new MediaElement();
+                //ennemyList = normalGame(ennemyList);
+                //ennemyList = makeItRain(ennemyList);
+                circleEnemy = new Rectangle();
+                tryPattern = createMovement(circleEnemy);
+                circleEnemy = createMovement(circleEnemy);
+                ennemy = new Rectangle();
+                testIndex = 0;
+                //Original position (Middle)
+                ennemyPath = new Vector(Canvas.GetLeft(ship), (this.Height / 2));
 
-            musicBG.Source = new Uri(soundPath("bgSound.wav"));
+                System.Media.SoundPlayer music = new System.Media.SoundPlayer(soundPath("GalagaRemix.wav"));
+                //music.Play();
 
-            musicBG.Play();*/
+                explosionSound = new SoundPlayer(soundPath("Grenade-Sound.wav"));
 
-            //musicBg.Play();
+                shootSound = new SoundPlayer(soundPath("Galaga_Firing_Sound.wav"));
 
-            //!!!
-            /*double oriL = Canvas.GetLeft(ennemyList.ElementAt(5));
-            double oriT = Canvas.GetTop(ennemyList.ElementAt(5));*/
+                /*musicBG = new MediaElement();
 
-            //bullet = shipTest.Properties.Resources.GalagaRocket;
-            //bullet.MakeTransparent(Color.White);
+                musicBG.Source = new Uri(soundPath("bgSound.wav"));
 
-            newLocX = this.Height / 2;
+                musicBG.Play();*/
 
-            update = new DispatcherTimer();
-            update.Tick += Update_Tick;
-            update.Interval = TimeSpan.FromSeconds(0.5);
+                //musicBg.Play();
 
-            update.Start();
+                //!!!
+                /*double oriL = Canvas.GetLeft(ennemyList.ElementAt(5));
+                double oriT = Canvas.GetTop(ennemyList.ElementAt(5));*/
 
-            explosionTimer = new DispatcherTimer();
-            explosionTimer.Tick += ExplosionTimer_Tick;
-            explosionTimer.Interval = TimeSpan.FromSeconds(0.1);
+                //bullet = shipTest.Properties.Resources.GalagaRocket;
+                //bullet.MakeTransparent(Color.White);
 
-            foward = new DispatcherTimer();
-            foward.Tick += Foward_Tick;
-            foward.Interval = TimeSpan.FromMilliseconds(1);
+                newLocX = this.Height / 2;
 
-            foward.Start();
+                update = new DispatcherTimer();
+                update.Tick += Update_Tick;
+                update.Interval = TimeSpan.FromSeconds(0.5);
 
-            bulletList = new List<Rectangle>();
-            
-            KeyDown += shipMove;
+                update.Start();
+
+                explosionTimer = new DispatcherTimer();
+                explosionTimer.Tick += ExplosionTimer_Tick;
+                explosionTimer.Interval = TimeSpan.FromSeconds(0.1);
+
+                foward = new DispatcherTimer();
+                foward.Tick += Foward_Tick;
+                foward.Interval = TimeSpan.FromMilliseconds(1);
+
+                foward.Start();
+
+                bulletList = new List<Rectangle>();
+
+                KeyDown += shipMove;
+            }
             
 
         }
@@ -252,16 +251,16 @@ namespace shipTest
         private void Update_Tick(object sender, EventArgs e)
         {
             
-            for(int i =0; i < testC.Count; i++)
+            for(int i =0; i < enemyList.Count; i++)
             {
-                if (testC.ElementAt(i) is BlueAlien)
-                    testC.ElementAt(i).updateSprite();
+                if (enemyList.ElementAt(i) is BlueAlien)
+                    enemyList.ElementAt(i).updateSprite();
 
-                if (testC.ElementAt(i) is RedAlien)
-                    testC.ElementAt(i).updateSprite();
+                if (enemyList.ElementAt(i) is RedAlien)
+                    enemyList.ElementAt(i).updateSprite();
 
-                if (testC.ElementAt(i) is GreenAlien)
-                    testC.ElementAt(i).updateSprite();
+                if (enemyList.ElementAt(i) is GreenAlien)
+                    enemyList.ElementAt(i).updateSprite();
 
             }                  
         }
@@ -307,8 +306,8 @@ namespace shipTest
             }
 
             shootPause++;
-            Console.WriteLine(testC.Count);
-            if (testC.Count == 0)
+            Console.WriteLine(enemyList.Count);
+            if (enemyList.Count == 0)
             {
                 test();
                 //testC = lvl1.run();
@@ -388,7 +387,7 @@ namespace shipTest
                 if (bulletList.Count != 0)
                 {
                     int points;
-                    points = collision(bulletList.ElementAt(i), testC);
+                    points = collision(bulletList.ElementAt(i), enemyList);
 
                     if (points > 0)
                     {
@@ -514,18 +513,18 @@ namespace shipTest
 
 
             if (!collide)
-                if (shipCollision(ship, testC))
+                if (shipCollision(ship, enemyList))
                 {
                     collide = true;
                     invulnerable = 0;
                     MessageBox.Show("Only Dumb can die HAHAHA", "NOOB", MessageBoxButton.OK);
-                    dead(ship, testC);
+                    dead(ship, enemyList);
                     //foward.Stop();
                 }
 
             // testC = updateRain(testC);
             //testC = lvl1.updateGame(testC);
-            testC = updateNextStep(testC);
+            enemyList = updateNextStep(enemyList);
 
         }
 

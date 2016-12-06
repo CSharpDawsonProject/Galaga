@@ -19,13 +19,13 @@ namespace shipTest
 
             if (part == 1)
             {
-                testC = partA(testC);
+                enemyList = partA(enemyList);
                 speed = 2;
             }
 
             if(part == 2)
             {
-                testC = partB(testC);
+                enemyList = partB(enemyList);
             }
 
         }
@@ -145,7 +145,7 @@ namespace shipTest
                     
                     if (!once) {
 
-                        testC = partB2(testC);
+                        enemyList = partB2(enemyList);
 
                         if(speed < 10 && part == 1) speed++;
                         
