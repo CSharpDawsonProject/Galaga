@@ -33,14 +33,14 @@ namespace shipTest
      *  
      *  
      * 
-     */ 
-      
+     */
+
 
     public partial class MainWindow : Window
     {
         static double newLocX;
         //static int newLocY;
-        Image shoot = new Image();
+        //Image shoot = new Image();
         string currentKey = "";
         DispatcherTimer foward;
         DispatcherTimer update;
@@ -48,7 +48,6 @@ namespace shipTest
         bool spaceBut = false;
         private int shootPause = 38;
         private List<Rectangle> bulletList;
-        private List<Rectangle> ennemyList;
 
 
 
@@ -56,22 +55,22 @@ namespace shipTest
         static Vector positionWave;
         int testIndex;
         Rectangle ennemy;
-        int timerInt = 20;
+        //int timerInt = 20;
 
         Rectangle circleEnemy;
-        double angle =0;
+        /*double angle =0;
         double angle2 = 0;
         double X = 100;
-        double Y = 100;
+        double Y = 100;*/
         Rectangle tryPattern;
-        int tp = 50;
+        //int tp = 50;
         bool collide = false;
         int invulnerable = 0;
         bool pause = false;
 
         int score = 0;
 
-        List<EnnemyShoot> ennShoot = new List<EnnemyShoot>();
+
 
         List<Ennemy> enemyList = new List<Ennemy>();
 
@@ -84,7 +83,7 @@ namespace shipTest
         LevelOne lvl1;
         SoundPlayer shootSound;
         SoundPlayer explosionSound;
-        MediaElement musicBG;
+        //MediaElement musicBG;
 
         public MainWindow()
         {
@@ -92,156 +91,172 @@ namespace shipTest
 
             InitializeComponent();
 
-            if (mainMenu())
-            {
+            /*if (mainMenu())
+            {*/
 
-                //THIS IS GETTING THE REAL SIZE OF THE SCREEN ~~                    
-                this.Height = SystemParameters.VirtualScreenHeight - 5;
-                myCanvas.Height = this.Height;
-                this.Width = SystemParameters.VirtualScreenWidth / 2.5;
-                myCanvas.Width = this.Width;
+            screenSizeGame();
 
-                this.Top = this.Height / 250;
-                this.Left = this.Width / 2;
-
-                Canvas.SetTop(ship, myCanvas.Height / 1.3);
-
-                Canvas.SetZIndex(bgImg, -1);
-                bgImg.Height = this.Height;
-                bgImg.Width = this.Width;
-
-                //PLACE FOR TEST LIST CLASSES
-
-                //testC.Add(redAl);
-
-                lvl1 = new LevelOne(myCanvas);
+            lvl1 = new LevelOne(myCanvas);
 
 
 
-                exploLoc = new List<Point>();
-                //testC = lvl1.run();
-                test();
+            exploLoc = new List<Point>();
+            //testC = lvl1.run();
+            makeItRainLvl();
 
-                if (ennShoot.Count != enemyList.Count)
-                    for (int i = 0; i < enemyList.Count; i++)
-                        ennShoot.Add(new EnnemyShoot(getLocation(enemyList.ElementAt(i).getEnemy()), myCanvas));
-                //INSTANCEOF ~ like java
-                //if (testC.ElementAt(0) is BlueAlien)
+            circleEnemy = new Rectangle();
+            tryPattern = createMovement(circleEnemy);
+            circleEnemy = createMovement(circleEnemy);
+            ennemy = new Rectangle();
+            testIndex = 0;
+            //Original position (Middle)
+            ennemyPath = new Vector(Canvas.GetLeft(ship), (this.Height / 2));
+
+            initializeMusic();
+
+            initializeVariable();
+
+            //}
+        }
+
+        /**
+         * The method will set the size of the screen
+         * based on the actual physical screen and set
+         * the background.
+         */
+        private void screenSizeGame()
+        {
+            this.Height = SystemParameters.VirtualScreenHeight - 5;
+            myCanvas.Height = this.Height;
+            this.Width = SystemParameters.VirtualScreenWidth / 2.5;
+            myCanvas.Width = this.Width;
+
+            this.Top = this.Height / 250;
+            this.Left = this.Width / 2;
+
+            Canvas.SetTop(ship, myCanvas.Height / 1.3);
+
+            Canvas.SetZIndex(bgImg, -1);
+            bgImg.Height = this.Height;
+            bgImg.Width = this.Width;
+        }
 
 
+        /**
+         * The method will initialize variables and
+         * all the timers to make the look constructor cleaner
+         */
+        private void initializeVariable()
+        {
+            //Start in the middle of the screen
+            newLocX = this.Width / 2;
 
-                //ennemyList = normalGame(ennemyList);
-                //ennemyList = makeItRain(ennemyList);
-                circleEnemy = new Rectangle();
-                tryPattern = createMovement(circleEnemy);
-                circleEnemy = createMovement(circleEnemy);
-                ennemy = new Rectangle();
-                testIndex = 0;
-                //Original position (Middle)
-                ennemyPath = new Vector(Canvas.GetLeft(ship), (this.Height / 2));
+            //Update timer will update the "sprite" of enemies
+            update = new DispatcherTimer();
+            update.Tick += Update_Tick;
+            update.Interval = TimeSpan.FromSeconds(0.5);
 
-                System.Media.SoundPlayer music = new System.Media.SoundPlayer(soundPath("GalagaRemix.wav"));
-                //music.Play();
+            update.Start();
 
-                explosionSound = new SoundPlayer(soundPath("Grenade-Sound.wav"));
+            //ExplosionTimer will be initialized, but will start
+            //only when a collision happen
+            explosionTimer = new DispatcherTimer();
+            explosionTimer.Tick += ExplosionTimer_Tick;
+            explosionTimer.Interval = TimeSpan.FromSeconds(0.1);
 
-                shootSound = new SoundPlayer(soundPath("Galaga_Firing_Sound.wav"));
+            //Foward is the MAIN timer of that game
+            //Foward will run all the methods useful for the game
+            //and update his state
+            foward = new DispatcherTimer();
+            foward.Tick += Foward_Tick;
+            foward.Interval = TimeSpan.FromMilliseconds(1);
 
-                /*musicBG = new MediaElement();
+            foward.Start();
 
-                musicBG.Source = new Uri(soundPath("bgSound.wav"));
+            //bulletList is made for the ship only
+            bulletList = new List<Rectangle>();
 
-                musicBG.Play();*/
+            //If a key is pressed the handler shipMove will run
+            KeyDown += shipMove;
+        }
 
-                //musicBg.Play();
+        private void initializeMusic()
+        {
+            explosionSound = new SoundPlayer(soundPath("Grenade-Sound.wav"));
 
-                //!!!
-                /*double oriL = Canvas.GetLeft(ennemyList.ElementAt(5));
-                double oriT = Canvas.GetTop(ennemyList.ElementAt(5));*/
-
-                //bullet = shipTest.Properties.Resources.GalagaRocket;
-                //bullet.MakeTransparent(Color.White);
-
-                newLocX = this.Height / 2;
-
-                update = new DispatcherTimer();
-                update.Tick += Update_Tick;
-                update.Interval = TimeSpan.FromSeconds(0.5);
-
-                update.Start();
-
-                explosionTimer = new DispatcherTimer();
-                explosionTimer.Tick += ExplosionTimer_Tick;
-                explosionTimer.Interval = TimeSpan.FromSeconds(0.1);
-
-                foward = new DispatcherTimer();
-                foward.Tick += Foward_Tick;
-                foward.Interval = TimeSpan.FromMilliseconds(1);
-
-                foward.Start();
-
-                bulletList = new List<Rectangle>();
-
-                KeyDown += shipMove;
-            }
-            
-
+            shootSound = new SoundPlayer(soundPath("Galaga_Firing_Sound.wav"));
         }
 
         private void ExplosionTimer_Tick(object sender, EventArgs e)
         {
-             if(exploLoc.Count != 0)
+            if (exploLoc.Count != 0)
             {
-                for(int i =0; i < exploLoc.Count; i++)
+                for (int i = 0; i < exploLoc.Count; i++)
                 {
 
                     if (track.Count != 0)
                         track[i]++;
 
-                    
 
-                    if (track.ElementAt(i) == 1) {
+
+                    if (track.ElementAt(i) == 1)
+                    {
                         explosions.ElementAt(i).Height = 40;
                         explosions.ElementAt(i).Width = 40;
-                        explosions.ElementAt(i).Fill = new ImageBrush { ImageSource = 
-                                new BitmapImage(new Uri(monsterPath("explosion2.png"), 
-                                                                        UriKind.Absolute)) };
-                        
-                        }
+                        explosions.ElementAt(i).Fill = new ImageBrush
+                        {
+                            ImageSource =
+                                new BitmapImage(new Uri(monsterPath("explosion5.png"),
+                                                                        UriKind.Absolute))
+                        };
 
-                    if (track.ElementAt(i) == 2) {
-                        explosions.ElementAt(i).Height = 30;
-                        explosions.ElementAt(i).Width = 30;
-                        explosions.ElementAt(i).Fill = new ImageBrush { ImageSource = 
-                                new BitmapImage(new Uri(monsterPath("explosion3.png"), 
-                                                                        UriKind.Absolute)) };
-                        }
-
-                    if (track.ElementAt(i) == 3) {
-                        explosions.ElementAt(i).Height = 20;
-                        explosions.ElementAt(i).Width = 20;
-                        explosions.ElementAt(i).Fill = new ImageBrush { ImageSource = 
-                                new BitmapImage(new Uri(monsterPath("explosion4.png"), 
-                                                                        UriKind.Absolute)) };
-                        }
-
-                    if (track.ElementAt(i) == 4) {
-                        explosions.ElementAt(i).Height = 10;
-                        explosions.ElementAt(i).Width = 10;
-                        explosions.ElementAt(i).Fill = new ImageBrush { ImageSource = 
-                                new BitmapImage(new Uri(monsterPath("explosion5.png"), 
-                                                                        UriKind.Absolute)) };
-                        
                     }
 
-                    if(track.ElementAt(i) > 4)
+                    if (track.ElementAt(i) == 2)
+                    {
+                        explosions.ElementAt(i).Height = 30;
+                        explosions.ElementAt(i).Width = 30;
+                        explosions.ElementAt(i).Fill = new ImageBrush
+                        {
+                            ImageSource =
+                                new BitmapImage(new Uri(monsterPath("explosion4.png"),
+                                                                        UriKind.Absolute))
+                        };
+                    }
+
+                    if (track.ElementAt(i) == 3)
+                    {
+                        explosions.ElementAt(i).Height = 20;
+                        explosions.ElementAt(i).Width = 20;
+                        explosions.ElementAt(i).Fill = new ImageBrush
+                        {
+                            ImageSource =
+                                new BitmapImage(new Uri(monsterPath("explosion3.png"),
+                                                                        UriKind.Absolute))
+                        };
+                    }
+
+                    if (track.ElementAt(i) == 4)
+                    {
+                        explosions.ElementAt(i).Height = 10;
+                        explosions.ElementAt(i).Width = 10;
+                        explosions.ElementAt(i).Fill = new ImageBrush
+                        {
+                            ImageSource =
+                                new BitmapImage(new Uri(monsterPath("explosion2.png"),
+                                                                        UriKind.Absolute))
+                        };
+
+                    }
+
+                    if (track.ElementAt(i) > 4)
                     {
                         myCanvas.Children.Remove(explosions.ElementAt(i));
                         track.RemoveAt(i);
                         exploLoc.RemoveAt(i);
                         explosions.RemoveAt(i);
                         i--;
-                    }                                                                           
+                    }
                 }
             }
             if (track.Count == 0)
@@ -250,8 +265,8 @@ namespace shipTest
 
         private void Update_Tick(object sender, EventArgs e)
         {
-            
-            for(int i =0; i < enemyList.Count; i++)
+
+            for (int i = 0; i < enemyList.Count; i++)
             {
                 if (enemyList.ElementAt(i) is BlueAlien)
                     enemyList.ElementAt(i).updateSprite();
@@ -262,7 +277,7 @@ namespace shipTest
                 if (enemyList.ElementAt(i) is GreenAlien)
                     enemyList.ElementAt(i).updateSprite();
 
-            }                  
+            }
         }
 
         private Rectangle createExplosion(Point loc)
@@ -271,73 +286,52 @@ namespace shipTest
 
             rec.Height = 50;
             rec.Width = 50;
-            rec.Fill = new ImageBrush { ImageSource = 
-                                new BitmapImage(new Uri(monsterPath("explosion1.png"), 
-                                                                        UriKind.Absolute)) };         
+            rec.Fill = new ImageBrush
+            {
+                ImageSource =
+                                new BitmapImage(new Uri(monsterPath("explosion1.png"),
+                                                                        UriKind.Absolute))
+            };
 
             Canvas.SetTop(rec, loc.Y);
             Canvas.SetLeft(rec, loc.X);
             myCanvas.Children.Add(rec);
 
-            
+
             return rec;
         }
 
-
-        public string updateExplosion(string explosion)
+        /**
+         * The method will allow the ship to move only
+         * left and right side. Also, if the user press
+         * space the ship will be able to shoot.
+         */
+        private void moveAndShoot()
         {
-            string path;
-
-            path = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
-
-            path = path.Substring(0, path.LastIndexOf("\\"));
-            path = path.Substring(0, path.LastIndexOf("\\"));
-            path = path.Substring(path.IndexOf(":") + 2);
-            path = System.IO.Path.Combine(path, ("Ressources\\" + explosion));
-            return path;
-        }
-
-        private void Foward_Tick(object sender, EventArgs e)
-        {
-            if (this.Width != myCanvas.Width || this.Height != myCanvas.Height)
-            {
-                myCanvas.Width = this.Width;
-                myCanvas.Height = this.Height;
-            }
-
-            shootPause++;
-            Console.WriteLine(enemyList.Count);
-            if (enemyList.Count == 0)
-            {
-                test();
-                //testC = lvl1.run();
-            }
-
-           
-            
-
+            /*
+             * Switch statement will ensure that the ship
+             * move but only in X axes
+             */
             switch (currentKey)
             {
                 case "Left":
-                    //currentKey = "";
-                    //newLocX -= 10;
                     newLocX -= 3.2;
                     if (newLocX < -6) newLocX = -6;
                     break;
 
                 case "Right":
-                    //currentKey = "";
-                    //newLocX += 10;
-                    newLocX += 3.2;               
-                    if (newLocX > myCanvas.Width-80) newLocX = myCanvas.Width - 80;
+                    newLocX += 3.2;
+                    if (newLocX > myCanvas.Width - 80) newLocX = myCanvas.Width - 80;
                     break;
 
             }
 
+            //If the spaceBut is set to true you that mean someone click it
             if (spaceBut)
             {
                 spaceBut = false;
 
+                //shootPause will ensure that the user do not spam 
                 if (shootPause > 20)
                 {
                     shootPause = 0;
@@ -345,16 +339,7 @@ namespace shipTest
                     bullet.Width = 50;
                     bullet.Height = 50;
 
-                    var outPutDirectory = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
-
-                    outPutDirectory = outPutDirectory.Substring(0, outPutDirectory.LastIndexOf("\\"));
-                    outPutDirectory = outPutDirectory.Substring(0, outPutDirectory.LastIndexOf("\\"));
-                    outPutDirectory = outPutDirectory.Substring(outPutDirectory.IndexOf(":") + 2);
-                    //Console.WriteLine("PATH OUTPUTDIR: " + outPutDirectory);
-
-                    var iconPath = System.IO.Path.Combine(outPutDirectory, "Ressources\\GalagaRocket.png");
-                    //Console.WriteLine("PATH: " + iconPath);
-                    bullet.Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(iconPath, UriKind.Absolute)) };
+                    bullet.Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(monsterPath("GalagaRocket.png"), UriKind.Absolute)) };
 
                     myCanvas.Children.Add(bullet);
                     setLocation(bullet, Canvas.GetTop(ship) - 15, Canvas.GetBottom(ship),
@@ -364,84 +349,109 @@ namespace shipTest
                     shootSound.Play();
                 }
             }
+        }
 
+        /**
+         * The method will look if the bullet shooted by
+         * mister ship hit an enemy or is outside of our canvas/screen.
+         */
+        private void updateShooting()
+        {
 
-            //Console.WriteLine();
-
-            //Remove bullet which are out of the screen
             for (int i = 0; i < bulletList.Count; i++)
             {
-                
+
+                // -5 is the speed of bullets
                 Canvas.SetTop(bulletList.ElementAt(i), Canvas.GetTop(bulletList.ElementAt(i)) - 5);
 
-                //Console.WriteLine(ennemyList.ElementAt(0));
-                //collision(bulletList.ElementAt(i),ennemyList);
-
+                //Remove bullet which are out of the screen
                 if (Canvas.GetTop(bulletList.ElementAt(i)) < -myCanvas.Height / 4.5)
                 {
-                    
+
                     myCanvas.Children.Remove(bulletList.ElementAt(i));
-                    bulletList.RemoveAt(i);                   
+                    bulletList.RemoveAt(i);
                 }
 
                 if (bulletList.Count != 0)
                 {
                     int points;
+                    /*
+                     * collision method will return -1 for not hit
+                     * 0 for hitted, but the enemy has still health
+                     * higher then 0 is the enemy is dead and it the score of 
+                     * the killed enemy.
+                     */
                     points = collision(bulletList.ElementAt(i), enemyList);
 
+                    //collision returned a score so someone is dead
                     if (points > 0)
                     {
+                        //change the score label
                         scoreLb.Content = "Score: " + (score += points);
+
                         myCanvas.Children.Remove(bulletList.ElementAt(i));
                         bulletList.RemoveAt(i);
                     }
-                    if(points == 0)
+
+                    //0 we hit something, but it not totally dead!
+                    if (points == 0)
                     {
+
                         myCanvas.Children.Remove(bulletList.ElementAt(i));
                         bulletList.RemoveAt(i);
                     }
                 }
-               
+
             }
+        }
+
+        private void Foward_Tick(object sender, EventArgs e)
+        {
+
+            shootPause++;
+            Console.WriteLine(enemyList.Count);
+            if (enemyList.Count == 0)
+            {
+                makeItRainLvl();
+                //testC = lvl1.run();
+            }
+
+            moveAndShoot();
+
+            updateShooting();
+
+
 
             if (exploLoc.Count != explosions.Count)
             {
                 track.Add(0);
                 explosions.Add(createExplosion(exploLoc.ElementAt(exploLoc.Count - 1)));
 
-
                 explosionSound.Play();
-                
-                //music.PlayLooping();
-                
-                
-                                    
+
                 if (explosionTimer.IsEnabled == false)
                     explosionTimer.Start();
 
             }
 
-            //CONSOLE SECOND
-            //Console.WriteLine(DateTime.Now.ToString("ss") );
+            /* if (timerInt > 20)
+             {
+                 if (testIndex == 0)
+                 {
+                     ennemy = createMovement(ennemy);
+                     testIndex = 1;
 
-            if (timerInt > 20)
-            {
-                if (testIndex == 0)
-                {
-                    ennemy = createMovement(ennemy);
-                    testIndex = 1;
+                 }
+                 else
+                 {
 
-                }
-                else
-                {
+                     ennemy = updateSprite(ennemy);
+                     testIndex = 0;
+                 }
+                 timerInt = 0;
+             }
+             timerInt++;*/
 
-                    ennemy = updateSprite(ennemy);
-                    testIndex = 0;
-                }
-                timerInt = 0;
-            }
-            timerInt++;
-        
 
             //DIAGONAL ENNEMY WORKING ~ 70%
             ennemyPath.Normalize();
@@ -453,11 +463,11 @@ namespace shipTest
             positionWave += vel * 5 + wave;
 
             //Console.WriteLine("Vec posWave Y: " + positionWave.Y + "\tVec posWave X: " + positionWave.X);
-            if(positionWave.Y > this.Height)
+            if (positionWave.Y > this.Height)
                 positionWave = vel * 5 + wave;
 
             if (ennemy != null)
-            setLocation(ennemy, positionWave);
+                setLocation(ennemy, positionWave);
 
             //Canvas.SetLeft(tryPattern, tp += 2);
             //Canvas.SetTop(tryPattern, ((Y + 50) + (Math.Sin(angle += 0.06) * 100)));
@@ -505,7 +515,7 @@ namespace shipTest
             setLocation(ship, new Point(newLocX, 0));
             //ennemyList = updateRain(ennemyList);
 
-            if(collide)
+            if (collide)
                 invulnerable++;
 
             if (collide && invulnerable > 100)
@@ -542,11 +552,6 @@ namespace shipTest
 
             for (int i = 0; i < list.Count && !touch; i++)
             {
-                //Console.WriteLine("I: " + i);          
-
-                //Console.WriteLine((int)enemyLoc.X + " " + (int)bulletLoc.X + " | " + (int)enemyLoc.Y + " " + (int)bulletLoc.Y);
-                //Console.WriteLine(Canvas.GetTop(ennemy.ElementAt(i)) + "\tEnnemyLEft: " + Canvas.GetLeft(ennemy.ElementAt(i)) + "\tLeftBullet: " + Canvas.GetLeft(bullet) + "\tTopBullet: " + Canvas.GetTop(bullet));       
-
 
                 if (getLocation(list.ElementAt(i).getEnemy()).X < (getLocation(ship).X + ship.ActualWidth) &&
                    (getLocation(list.ElementAt(i).getEnemy()).X + list.ElementAt(i).getEnemy().ActualWidth) > getLocation(ship).X &&
@@ -592,7 +597,7 @@ namespace shipTest
                         update.Stop();
                         foward.Stop();
                         pause = true;
-                        //pauseWindow(pause);
+                        pauseWindow(pause);
                     }
                     else
                     {
@@ -608,13 +613,15 @@ namespace shipTest
         private void pauseWindow(bool display)
         {
 
-            
-            pauseScreen = new Rectangle();
+            //MainWindow.OpacityProperty.
+            //Application.Current.MainWindow.Opacity = 20;
+
+            /*pauseScreen = new Rectangle();
             myCanvas.Children.Add(pauseScreen);
-            pauseScreen.Width = myCanvas.Width -100;
-            pauseScreen.Height = myCanvas.Height -100;
+            pauseScreen.Width = myCanvas.Width - 100;
+            pauseScreen.Height = myCanvas.Height - 100;
             pauseScreen.Fill = new SolidColorBrush(Color.FromRgb(26, 26, 26));
-            
+
             Canvas.SetZIndex(pauseScreen, 99);
 
             Label points = new Label();
@@ -651,7 +658,7 @@ namespace shipTest
             Canvas.SetLeft(obj, left);
             Canvas.SetRight(obj, right);
             Canvas.SetBottom(obj, bottom);
-            Canvas.SetTop(obj, top);          
+            Canvas.SetTop(obj, top);
         }
 
         private static Point getLocation(Rectangle obj)
@@ -697,7 +704,7 @@ namespace shipTest
 
         private Rectangle createMovement(Rectangle ennemy)
         {
-            
+
 
             //Console.WriteLine("Creation of an ennemy (single)");
 
@@ -706,7 +713,7 @@ namespace shipTest
             ennemy.Height = 30;
             ennemy.Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(monsterPath("enemyD1.png"), UriKind.Absolute)) };
             myCanvas.Children.Add(ennemy);
-            
+
 
             return ennemy;
         }
@@ -728,294 +735,35 @@ namespace shipTest
 
         private int collision(Rectangle bullet, List<Ennemy> ennemy)
         {
-
-
-           
             bool touch = false;
             int points = -1;
 
             for (int i = 0; i < ennemy.Count && !touch; i++)
             {
-               
+                Point enemyLoc = getLocation(ennemy.ElementAt(i).getEnemy());
+                Point bulletLoc = getLocation(bullet);
 
-                //Console.WriteLine((int)enemyLoc.X + " " + (int)bulletLoc.X + " | " + (int)enemyLoc.Y + " " + (int)bulletLoc.Y);
-                //Console.WriteLine(Canvas.GetTop(ennemy.ElementAt(i)) + "\tEnnemyLEft: " + Canvas.GetLeft(ennemy.ElementAt(i)) + "\tLeftBullet: " + Canvas.GetLeft(bullet) + "\tTopBullet: " + Canvas.GetTop(bullet));       
-
-
-                if (getLocation(ennemy.ElementAt(i).getEnemy()).X < (getLocation(bullet).X + bullet.ActualWidth) &&
-                   (getLocation(ennemy.ElementAt(i).getEnemy()).X + ennemy.ElementAt(i).getEnemy().ActualWidth) > getLocation(bullet).X &&
-                   getLocation(ennemy.ElementAt(i).getEnemy()).Y < (getLocation(bullet).Y + bullet.ActualHeight) &&
-                   (ennemy.ElementAt(i).getEnemy().ActualHeight + getLocation(ennemy.ElementAt(i).getEnemy()).Y) > getLocation(bullet).Y)
-                {                    
+                if (enemyLoc.X < (bulletLoc.X + bullet.ActualWidth) &&
+                   (enemyLoc.X + ennemy.ElementAt(i).getEnemy().ActualWidth) > bulletLoc.X &&
+                   enemyLoc.Y < (bulletLoc.Y + bullet.ActualHeight) &&
+                   (ennemy.ElementAt(i).getEnemy().ActualHeight + enemyLoc.Y) > bulletLoc.Y)
+                {
                     if (ennemy.ElementAt(i).collide() == 0)
                     {
                         exploLoc.Add(getLocation(ennemy.ElementAt(i).getEnemy()));
                         myCanvas.Children.Remove(ennemy.ElementAt(i).getEnemy());
                         points = ennemy.ElementAt(i).score();
-                        ennemy.Remove(ennemy.ElementAt(i));                
-                        
+                        ennemy.Remove(ennemy.ElementAt(i));
+
                         return points;
                     }
                     else
                     {
-                        
-                        return points =0;
-                    }                                                                              
+                        return points = 0;
+                    }
                 }
             }
             return points;
         }
-
-        private List<Rectangle> normalGame(List<Rectangle> enemyList)
-        {
-            enemyList = new List<Rectangle>(40);
-            myCanvas.Width = this.Width;
-            myCanvas.Height = this.Height;
-            int numEnnemy = 0;
-            double spaceBetween = this.Width / 2 -250;
-            double height = myCanvas.Height / 2.5;
-
-            for (int i = 0; i < 40; i++)
-            {
-                
-                if (i < 20)
-                { //TWO LINES OF BLUE
-                    enemyList.Add(new Rectangle());
-                    enemyList.ElementAt(i).Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(monsterPath("enemyD1.png"), UriKind.Absolute)) };
-
-                    myCanvas.Children.Add(enemyList.ElementAt(i));
-                    enemyList.ElementAt(i).Width = 30;
-                    enemyList.ElementAt(i).Height = 30;
-
-                    if (numEnnemy < 10)
-                    {
-                        Canvas.SetTop(enemyList.ElementAt(i), height);
-                        Canvas.SetLeft(enemyList.ElementAt(i), spaceBetween += 25 + 15);
-                        numEnnemy++;
-                    }
-                    else //SECOND ROW
-                    {
-
-                        if (numEnnemy ==10)
-                            spaceBetween = this.Width / 2 - 250;
-
-
-                        Canvas.SetTop(enemyList.ElementAt(i), height - 40);
-                        Canvas.SetLeft(enemyList.ElementAt(i), spaceBetween += 25 + 15);
-                        numEnnemy++;
-                    }
-
-                }
-
-                //Reset the number of ennemy for the new row (16)
-                if (numEnnemy == 20 && i ==20)
-                {
-                    numEnnemy = 0;
-                    spaceBetween = this.Width / 2 - 210;
-                    height -= 85;
-                }
-                 
-
-
-                if (i>=20 && i < 36)
-                { //TWO LINES OF RED
-                    
-                    enemyList.Add(new Rectangle());
-                    enemyList.ElementAt(i).Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(monsterPath("enemyA1.png"), UriKind.Absolute)) };
-                    myCanvas.Children.Add(enemyList.ElementAt(i));
-                    enemyList.ElementAt(i).Width = 30;
-                    enemyList.ElementAt(i).Height = 30;
-
-                    if (numEnnemy < 8)
-                    {
-                        Canvas.SetTop(enemyList.ElementAt(i), height);
-                        Canvas.SetLeft(enemyList.ElementAt(i), spaceBetween += 25 + 15);
-                        numEnnemy++;
-                    }
-                    else //SECOND ROW
-                    {
-
-                        if (numEnnemy == 8)
-                            spaceBetween = this.Width / 2 - 210;
-
-
-                        Canvas.SetTop(enemyList.ElementAt(i), height - 40);
-                        Canvas.SetLeft(enemyList.ElementAt(i), spaceBetween += 25 + 15);
-                        numEnnemy++;
-                    }
-                }
-
-                //Reset the number of ennemy for the new row (16)
-                
-                if (numEnnemy == 16 && i ==36)
-                {
-                   
-                    numEnnemy = 0;
-                    spaceBetween = this.Width / 2 -130;
-                    height -= 85;
-                }
-
-                if(i >= 36)
-                { //4 GREEN
-                    //Console.WriteLine(i);
-                    enemyList.Add(new Rectangle());
-                    enemyList.ElementAt(i).Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(monsterPath("enemyB1.png"), UriKind.Absolute)) };
-                    myCanvas.Children.Add(enemyList.ElementAt(i));
-                    enemyList.ElementAt(i).Width = 30;
-                    enemyList.ElementAt(i).Height = 30;
-
-                    if (numEnnemy < 4)
-                    {
-                        Canvas.SetTop(enemyList.ElementAt(i), height);
-                        Canvas.SetLeft(enemyList.ElementAt(i), spaceBetween += 25 + 15);
-                        numEnnemy++;
-                    }
-                }               
-            }
-            return enemyList;
-        }
-
-
-        private List<Ennemy> normalGame(List<Ennemy> enemyList)
-        {
-            enemyList = new List<Ennemy>(40);
-            myCanvas.Width = this.Width;
-            myCanvas.Height = this.Height;
-            int numEnnemy = 0;
-            double spaceBetween = this.Width / 2 - 250;
-            double height = myCanvas.Height / 2.5;
-
-            for (int i = 0; i < 40; i++)
-            {
-
-                if (i < 20)
-                { //TWO LINES OF BLUE
-                    enemyList.Add(new BlueAlien());
-                    
-
-                    myCanvas.Children.Add(enemyList.ElementAt(i).getEnemy());
-                   
-
-                    if (numEnnemy < 10)
-                    {
-                        Canvas.SetTop(enemyList.ElementAt(i).getEnemy(), height);
-                        Canvas.SetLeft(enemyList.ElementAt(i).getEnemy(), spaceBetween += 25 + 15);
-                        numEnnemy++;
-                    }
-                    else //SECOND ROW
-                    {
-
-                        if (numEnnemy == 10)
-                            spaceBetween = this.Width / 2 - 250;
-
-
-                        Canvas.SetTop(enemyList.ElementAt(i).getEnemy(), height - 40);
-                        Canvas.SetLeft(enemyList.ElementAt(i).getEnemy(), spaceBetween += 25 + 15);
-                        numEnnemy++;
-                    }
-
-                }
-
-                //Reset the number of ennemy for the new row (16)
-                if (numEnnemy == 20 && i == 20)
-                {
-                    numEnnemy = 0;
-                    spaceBetween = this.Width / 2 - 210;
-                    height -= 85;
-                }
-
-
-
-                if (i >= 20 && i < 36)
-                { //TWO LINES OF RED
-
-                    enemyList.Add(new RedAlien());
-                    myCanvas.Children.Add(enemyList.ElementAt(i).getEnemy());
-
-
-                    if (numEnnemy < 8)
-                    {
-                        Canvas.SetTop(enemyList.ElementAt(i).getEnemy(), height);
-                        Canvas.SetLeft(enemyList.ElementAt(i).getEnemy(), spaceBetween += 25 + 15);
-                        numEnnemy++;
-                    }
-                    else //SECOND ROW
-                    {
-
-                        if (numEnnemy == 8)
-                            spaceBetween = this.Width / 2 - 210;
-
-
-                        Canvas.SetTop(enemyList.ElementAt(i).getEnemy(), height - 40);
-                        Canvas.SetLeft(enemyList.ElementAt(i).getEnemy(), spaceBetween += 25 + 15);
-                        numEnnemy++;
-                    }
-                }
-
-                //Reset the number of ennemy for the new row (16)
-
-                if (numEnnemy == 16 && i == 36)
-                {
-
-                    numEnnemy = 0;
-                    spaceBetween = this.Width / 2 - 130;
-                    height -= 85;
-                }
-
-                if (i >= 36)
-                { //4 GREEN
-                    //Console.WriteLine(i);
-                    enemyList.Add(new GreenAlien());
-                    myCanvas.Children.Add(enemyList.ElementAt(i).getEnemy());
-
-                    if (numEnnemy < 4)
-                    {
-                        Canvas.SetTop(enemyList.ElementAt(i).getEnemy(), height);
-                        Canvas.SetLeft(enemyList.ElementAt(i).getEnemy(), spaceBetween += 25 + 15);
-                        numEnnemy++;
-                    }
-                }
-            }
-            return enemyList;
-        }
-
-        private List<Rectangle> makeItRain(List<Rectangle> list)
-        {
-            list = new List<Rectangle>();
-            int left = -100;
-            for(int i =0; i < 14; i++)
-            {              
-                list.Add(createMovement(new Rectangle()));
-                Canvas.SetTop(list.ElementAt(i), 0);
-                Canvas.SetLeft(list.ElementAt(i), left += 50);
-
-            }
-
-
-            return list;
-        }
-
-        private List<Rectangle> updateRain(List<Rectangle> list)
-        {
-            foreach (Rectangle rec in list)
-                if (Canvas.GetTop(rec) > 400)
-                    Canvas.SetTop(rec, 0);
-            else
-                Canvas.SetTop(rec, Canvas.GetTop(rec) + 1.8);
-
-            return list;
-        }
-
-        private List<Ennemy> updateRain(List<Ennemy> list)
-        {
-            foreach (Ennemy rec in list)
-                if (Canvas.GetTop(rec.getEnemy()) > 1000)
-                    Canvas.SetTop(rec.getEnemy(), 0);
-                else
-                    Canvas.SetTop(rec.getEnemy(), Canvas.GetTop(rec.getEnemy()) + 2);
-
-            return list;
-        }
-
-    }
+    }       
 }

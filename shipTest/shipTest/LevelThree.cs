@@ -13,7 +13,7 @@ namespace shipTest
         int speed = 2;
         int part = 0;
 
-        private void test()
+        private void makeItRainLvl()
         {
             part++;
 
