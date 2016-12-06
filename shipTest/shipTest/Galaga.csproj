@@ -135,6 +135,11 @@
     <Resource Include="Ressources\shipB.png" />
     <Resource Include="Ressources\shipPB.png" />
     <Resource Include="Ressources\mainMenuBg.jpg" />
+    <Resource Include="Ressources\Galaga_queen.png" />
+    <Resource Include="Ressources\Galaga_queen_aqua.png" />
+    <Resource Include="Ressources\Galaga_queen_blue.png" />
+    <Resource Include="Ressources\Galaga_queen_red.png" />
+    <Resource Include="Ressources\Galaga_queen_yellow.png" />
     <Content Include="Sound\bgSound.wav" />
     <Content Include="Sound\enemyShot.wav" />
     <Content Include="Sound\explosionSound.wav" />

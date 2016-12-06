@@ -206,7 +206,7 @@ namespace shipTest
                         explosions.ElementAt(i).Fill = new ImageBrush
                         {
                             ImageSource =
-                                new BitmapImage(new Uri(monsterPath("explosion5.png"),
+                                new BitmapImage(new Uri(resourcePath("explosion5.png"),
                                                                         UriKind.Absolute))
                         };
 
@@ -219,7 +219,7 @@ namespace shipTest
                         explosions.ElementAt(i).Fill = new ImageBrush
                         {
                             ImageSource =
-                                new BitmapImage(new Uri(monsterPath("explosion4.png"),
+                                new BitmapImage(new Uri(resourcePath("explosion4.png"),
                                                                         UriKind.Absolute))
                         };
                     }
@@ -231,7 +231,7 @@ namespace shipTest
                         explosions.ElementAt(i).Fill = new ImageBrush
                         {
                             ImageSource =
-                                new BitmapImage(new Uri(monsterPath("explosion3.png"),
+                                new BitmapImage(new Uri(resourcePath("explosion3.png"),
                                                                         UriKind.Absolute))
                         };
                     }
@@ -243,7 +243,7 @@ namespace shipTest
                         explosions.ElementAt(i).Fill = new ImageBrush
                         {
                             ImageSource =
-                                new BitmapImage(new Uri(monsterPath("explosion2.png"),
+                                new BitmapImage(new Uri(resourcePath("explosion2.png"),
                                                                         UriKind.Absolute))
                         };
 
@@ -289,7 +289,7 @@ namespace shipTest
             rec.Fill = new ImageBrush
             {
                 ImageSource =
-                                new BitmapImage(new Uri(monsterPath("explosion1.png"),
+                                new BitmapImage(new Uri(resourcePath("explosion1.png"),
                                                                         UriKind.Absolute))
             };
 
@@ -339,7 +339,7 @@ namespace shipTest
                     bullet.Width = 50;
                     bullet.Height = 50;
 
-                    bullet.Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(monsterPath("GalagaRocket.png"), UriKind.Absolute)) };
+                    bullet.Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(resourcePath("GalagaRocket.png"), UriKind.Absolute)) };
 
                     myCanvas.Children.Add(bullet);
                     setLocation(bullet, Canvas.GetTop(ship) - 15, Canvas.GetBottom(ship),
@@ -596,6 +596,7 @@ namespace shipTest
                     {
                         update.Stop();
                         foward.Stop();
+                        explosionTimer.Stop();
                         pause = true;
                         pauseWindow(pause);
                     }
@@ -603,49 +604,27 @@ namespace shipTest
                     {
                         update.Start();
                         foward.Start();
+                        explosionTimer.Start();
                         pause = false;
-                        //deletePause();
+                        unPause();
                     }
                     break;
             }
         }
 
         private void pauseWindow(bool display)
-        {
-
-            //MainWindow.OpacityProperty.
-            //Application.Current.MainWindow.Opacity = 20;
-
-            /*pauseScreen = new Rectangle();
-            myCanvas.Children.Add(pauseScreen);
-            pauseScreen.Width = myCanvas.Width - 100;
-            pauseScreen.Height = myCanvas.Height - 100;
-            pauseScreen.Fill = new SolidColorBrush(Color.FromRgb(26, 26, 26));
-
-            Canvas.SetZIndex(pauseScreen, 99);
-
-            Label points = new Label();
-            points.Height = 50;
-            points.Width = 75;
-            points.Content = "Hi There";
-
-            Canvas.SetTop(points, 100);
-            Canvas.SetRight(points, 100);
-            myCanvas.Children.Add(points);
-            Canvas.SetZIndex(pauseScreen, 101);
-            points.Background = new SolidColorBrush(Color.FromRgb(51, 0, 0));
-
-            /*if (display)
-                deletePause(points);*/
+        {        
+            Application.Current.MainWindow.Opacity = .20;
+            /*Canvas.SetTop(pauseImg, myCanvas.Height);
+            Canvas.SetLeft(pauseImg, myCanvas.Width);   */
 
         }
 
-        private void deletePause()
+        private void unPause()
         {
-            myCanvas.Children.Remove(pauseScreen);
-            pauseScreen = null;
-            Console.WriteLine(myCanvas.Children.Count);
-            //myCanvas.Children.IndexOf(points);
+            Application.Current.MainWindow.Opacity = 1;            
+
+
         }
         private void setLocation(Image obj, Point objLocation)
         {
@@ -676,7 +655,7 @@ namespace shipTest
             Canvas.SetTop(rec, vec.Y);
         }
 
-        private string monsterPath(string creature)
+        private string resourcePath(string creature)
         {
             string path;
 
@@ -711,7 +690,7 @@ namespace shipTest
             myCanvas.Children.Remove(ennemy);
             ennemy.Width = 30;
             ennemy.Height = 30;
-            ennemy.Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(monsterPath("enemyD1.png"), UriKind.Absolute)) };
+            ennemy.Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(resourcePath("enemyD1.png"), UriKind.Absolute)) };
             myCanvas.Children.Add(ennemy);
 
 
@@ -727,7 +706,7 @@ namespace shipTest
 
             rec.Width = 30;
             rec.Height = 30;*/
-            ennemy.Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(monsterPath("enemyD2.png"), UriKind.Absolute)) };
+            ennemy.Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(resourcePath("enemyD2.png"), UriKind.Absolute)) };
 
             //myCanvas.Children.Add(rec);
             return ennemy;
