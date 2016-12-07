@@ -141,6 +141,13 @@
     <Resource Include="Ressources\Galaga_queen_blue.png" />
     <Resource Include="Ressources\Galaga_queen_red.png" />
     <Resource Include="Ressources\Galaga_queen_yellow.png" />
+    <Resource Include="Ressources\creditsPic.png" />
+    <Resource Include="Ressources\exitMenu.png" />
+    <Resource Include="Ressources\gameOverImg.png" />
+    <Resource Include="Ressources\lifeImg.png" />
+    <Resource Include="Ressources\pauseImg.png" />
+    <Resource Include="Ressources\scoreImg.png" />
+    <Resource Include="Ressources\startMenu.png" />
     <Content Include="Sound\bgSound.wav" />
     <Content Include="Sound\enemyShot.wav" />
     <Content Include="Sound\explosionSound.wav" />
