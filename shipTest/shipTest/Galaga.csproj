@@ -66,6 +66,7 @@
     <Compile Include="ILevel.cs" />
     <Compile Include="LevelOne.cs" />
     <Compile Include="LevelThree.cs" />
+    <Compile Include="LevelTwo.cs" />
     <Compile Include="mainMenu.cs" />
     <Compile Include="RedAlien.cs" />
     <Page Include="MainWindow.xaml">
