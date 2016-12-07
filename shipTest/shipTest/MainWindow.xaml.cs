@@ -91,9 +91,15 @@ namespace shipTest
 
             InitializeComponent();
 
-            /*if (mainMenu())
-            {*/
 
+            gameStart();
+
+            
+
+        }
+
+        private void gameStart()
+        {
             screenSizeGame();
 
             lvl1 = new LevelOne(myCanvas);
@@ -115,8 +121,6 @@ namespace shipTest
             initializeMusic();
 
             initializeVariable();
-
-            //}
         }
 
         /**
@@ -158,6 +162,7 @@ namespace shipTest
 
             update.Start();
 
+         
             //ExplosionTimer will be initialized, but will start
             //only when a collision happen
             explosionTimer = new DispatcherTimer();
@@ -169,7 +174,7 @@ namespace shipTest
             //and update his state
             foward = new DispatcherTimer();
             foward.Tick += Foward_Tick;
-            foward.Interval = TimeSpan.FromMilliseconds(1);
+            foward.Interval = TimeSpan.FromMilliseconds(3.3);
 
             foward.Start();
 
