@@ -148,6 +148,10 @@
     <Resource Include="Ressources\pauseImg.png" />
     <Resource Include="Ressources\scoreImg.png" />
     <Resource Include="Ressources\startMenu.png" />
+    <Resource Include="Ressources\shipExplose1.png" />
+    <Resource Include="Ressources\shipExplose2.png" />
+    <Resource Include="Ressources\shipExplose3.png" />
+    <Resource Include="Ressources\shipExplose4.png" />
     <Content Include="Sound\bgSound.wav" />
     <Content Include="Sound\enemyShot.wav" />
     <Content Include="Sound\explosionSound.wav" />

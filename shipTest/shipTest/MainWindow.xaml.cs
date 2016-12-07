@@ -38,63 +38,46 @@ namespace shipTest
 
     public partial class MainWindow : Window
     {
-        static double newLocX;
-        //static int newLocY;
-        //Image shoot = new Image();
-        string currentKey = "";
-        DispatcherTimer foward;
-        DispatcherTimer update;
-        DispatcherTimer explosionTimer;
-        bool spaceBut = false;
+        private static double newLocX;
+        private string currentKey = "";
+        private DispatcherTimer foward;
+        private DispatcherTimer update;
+        private DispatcherTimer enemyExplo;
+        private DispatcherTimer allyExplo;
+        private bool spaceBut = false;
         private int shootPause = 38;
         private List<Rectangle> bulletList;
 
+        private bool collide = false;
+        private int invulnerable = 0;
+        private bool pause = false;
 
-
-        Vector ennemyPath;
-        static Vector positionWave;
-        int testIndex;
-        Rectangle ennemy;
-        //int timerInt = 20;
-
-        Rectangle circleEnemy;
-        /*double angle =0;
-        double angle2 = 0;
-        double X = 100;
-        double Y = 100;*/
-        Rectangle tryPattern;
-        //int tp = 50;
-        bool collide = false;
-        int invulnerable = 0;
-        bool pause = false;
+        private int occurence = 0;
+        private int life = 2;
+        private Rectangle[] shipLife = new Rectangle[2];
 
         int score = 0;
 
 
 
-        List<Ennemy> enemyList = new List<Ennemy>();
+        private List<Ennemy> enemyList = new List<Ennemy>();
 
 
-        List<int> track = new List<int>();
-        List<Rectangle> explosions = new List<Rectangle>();
-        List<Point> exploLoc;
-        Rectangle pauseScreen = new Rectangle();
+        private List<int> track = new List<int>();
+        private List<Rectangle> explosions = new List<Rectangle>();
+        private List<Point> exploLoc;
+        private Rectangle pauseScreen = new Rectangle();
 
-        LevelOne lvl1;
-        SoundPlayer shootSound;
-        SoundPlayer explosionSound;
+        private SoundPlayer shootSound;
+        private SoundPlayer explosionSound;
         //MediaElement musicBG;
 
         public MainWindow()
         {
-            //LevelThree lvl3 = new LevelThree();
 
             InitializeComponent();
 
-
             gameStart();
-
-            
 
         }
 
@@ -102,25 +85,50 @@ namespace shipTest
         {
             screenSizeGame();
 
-            lvl1 = new LevelOne(myCanvas);
-
-
-
             exploLoc = new List<Point>();
-            //testC = lvl1.run();
-            makeItRainLvl();
 
-            circleEnemy = new Rectangle();
-            tryPattern = createMovement(circleEnemy);
-            circleEnemy = createMovement(circleEnemy);
-            ennemy = new Rectangle();
-            testIndex = 0;
-            //Original position (Middle)
-            ennemyPath = new Vector(Canvas.GetLeft(ship), (this.Height / 2));
+            makeItRainLvl();
 
             initializeMusic();
 
             initializeVariable();
+
+            initializeLife();
+        }
+
+        private void initializeLife()
+        {
+            int space = 0;
+
+            for (int i = 0; i < shipLife.Length; i++)
+            {
+                Rectangle rect = new Rectangle();
+
+                if (i == 0)
+                {
+                    rect.Fill = new ImageBrush
+                    {
+                        ImageSource = new BitmapImage(new Uri(resourcePath("shipB.png"),
+                                                                            UriKind.Absolute))
+                    };
+
+                }
+                else
+                    rect.Fill = new ImageBrush
+                    {
+                        ImageSource = new BitmapImage(new Uri(resourcePath("shipPB.png"),
+                                                                        UriKind.Absolute))
+                    };
+
+                Canvas.SetTop(rect, Canvas.GetTop(lifeLb));
+                Canvas.SetLeft(rect, Canvas.GetLeft(lifeLb) + (space += 50));
+
+                rect.Height = 40;
+                rect.Width = 40;
+                myCanvas.Children.Add(rect);
+
+                shipLife[i] = rect;
+            }
         }
 
         /**
@@ -130,7 +138,7 @@ namespace shipTest
          */
         private void screenSizeGame()
         {
-            this.Height = SystemParameters.VirtualScreenHeight - 5;
+            this.Height = SystemParameters.VirtualScreenHeight - 50;
             myCanvas.Height = this.Height;
             this.Width = SystemParameters.VirtualScreenWidth / 2.5;
             myCanvas.Width = this.Width;
@@ -152,6 +160,8 @@ namespace shipTest
          */
         private void initializeVariable()
         {
+            Canvas.SetTop(lifeLb, myCanvas.Height / 1.1);
+
             //Start in the middle of the screen
             newLocX = this.Width / 2;
 
@@ -162,12 +172,17 @@ namespace shipTest
 
             update.Start();
 
-         
-            //ExplosionTimer will be initialized, but will start
+            //allyExplo will be initialized, but will start
             //only when a collision happen
-            explosionTimer = new DispatcherTimer();
-            explosionTimer.Tick += ExplosionTimer_Tick;
-            explosionTimer.Interval = TimeSpan.FromSeconds(0.1);
+            allyExplo = new DispatcherTimer();
+            allyExplo.Tick += AllyExplo_Tick;
+            allyExplo.Interval = TimeSpan.FromSeconds(0.7);
+
+            //enemyExplo will be initialized, but will start
+            //only when a collision happen
+            enemyExplo = new DispatcherTimer();
+            enemyExplo.Tick += ExplosionTimer_Tick;
+            enemyExplo.Interval = TimeSpan.FromSeconds(0.1);
 
             //Foward is the MAIN timer of that game
             //Foward will run all the methods useful for the game
@@ -183,6 +198,7 @@ namespace shipTest
 
             //If a key is pressed the handler shipMove will run
             KeyDown += shipMove;
+
         }
 
         private void initializeMusic()
@@ -265,7 +281,7 @@ namespace shipTest
                 }
             }
             if (track.Count == 0)
-                explosionTimer.Stop();
+                enemyExplo.Stop();
         }
 
         private void Update_Tick(object sender, EventArgs e)
@@ -415,10 +431,10 @@ namespace shipTest
 
             shootPause++;
             Console.WriteLine(enemyList.Count);
+
             if (enemyList.Count == 0)
             {
                 makeItRainLvl();
-                //testC = lvl1.run();
             }
 
             moveAndShoot();
@@ -434,91 +450,11 @@ namespace shipTest
 
                 explosionSound.Play();
 
-                if (explosionTimer.IsEnabled == false)
-                    explosionTimer.Start();
+                if (enemyExplo.IsEnabled == false)
+                    enemyExplo.Start();
 
             }
 
-            /* if (timerInt > 20)
-             {
-                 if (testIndex == 0)
-                 {
-                     ennemy = createMovement(ennemy);
-                     testIndex = 1;
-
-                 }
-                 else
-                 {
-
-                     ennemy = updateSprite(ennemy);
-                     testIndex = 0;
-                 }
-                 timerInt = 0;
-             }
-             timerInt++;*/
-
-
-            //DIAGONAL ENNEMY WORKING ~ 70%
-            ennemyPath.Normalize();
-            Vector perp = new Vector(-ennemyPath.Y, ennemyPath.X);
-            float waveAmp = 15.00f;
-            float waveAngle = 5 * 3.14f * 2;
-            Vector wave = perp * Math.Sin(waveAngle) * waveAmp;
-            Vector vel = ennemyPath * 0.5;//speed
-            positionWave += vel * 5 + wave;
-
-            //Console.WriteLine("Vec posWave Y: " + positionWave.Y + "\tVec posWave X: " + positionWave.X);
-            if (positionWave.Y > this.Height)
-                positionWave = vel * 5 + wave;
-
-            if (ennemy != null)
-                setLocation(ennemy, positionWave);
-
-            //Canvas.SetLeft(tryPattern, tp += 2);
-            //Canvas.SetTop(tryPattern, ((Y + 50) + (Math.Sin(angle += 0.06) * 100)));
-
-            //NEW PATTERN 50% WORKING outOfBound Sir ...
-            /*Canvas.SetLeft(ennemyList.ElementAt(5), Canvas.GetLeft(ennemyList.ElementAt(5)) -0.5);
-            Canvas.SetTop(ennemyList.ElementAt(5), (Canvas.GetTop(ennemyList.ElementAt(5)) - (Math.Sin(angle2 -= 0.03) * 3)));
-            */
-
-            //Console.WriteLine(angle);
-            /*if (angle > 13)
-            {
-                tp = 25;
-                angle = 0;
-            }*/
-
-            //circleEnemy = createMovement(circleEnemy);
-
-            //CIRCLE PATTERN ~ 80% (Combine wih Diagonal?)
-            //Canvas.SetRight(circleEnemy, ( (X +=0.05) + (Math.Cos(angle+=0.03) * 100)));
-            //Canvas.SetTop(circleEnemy, ( (Y+50) +(Math.Sin(angle += 0.03) * 100)));
-
-            //Console.WriteLine(circleEnemy.ActualHeight);
-
-
-            //CIRCLE PATTERN DO NOT TOUCH
-            //origin X and y is the center of your circle
-            /*X= originX + cos(angle) * radius;
-            Y= originY + sin(angle) * radius;*/
-
-            //THEORY ~ half working !!!!!!PLEASE DO NOT ERASE!!!!!!!!
-            /*Vector dir = target - position; // direction
-            dir.Normalize();
-            Vector perp(-dir.y, dir.x ); // perpendicular
-
-            float waveAmp = 0.05f; // adjust if needed
-            float waveAngle = elapsedTime * 3.14f * 2; // adjust if needed
-            Vector wave = perp * sin(waveAngle) * waveAmp;
-
-            Vector vel = dir * speed;
-            position += vel * elaspedTime + wave;*/
-
-
-            //Console.WriteLine(newLocX);
-            setLocation(ship, new Point(newLocX, 0));
-            //ennemyList = updateRain(ennemyList);
 
             if (collide)
                 invulnerable++;
@@ -532,21 +468,111 @@ namespace shipTest
                 {
                     collide = true;
                     invulnerable = 0;
-                    MessageBox.Show("Only Dumb can die HAHAHA", "NOOB", MessageBoxButton.OK);
-                    dead(ship, enemyList);
-                    //foward.Stop();
+                    dead(ship);
                 }
 
-            // testC = updateRain(testC);
-            //testC = lvl1.updateGame(testC);
             enemyList = updateNextStep(enemyList);
 
         }
 
-        //Another meaning for after?
-        private void dead(Image ship, List<Ennemy> list)
+        private void AllyExplo_Tick(object sender, EventArgs e)
         {
-            myCanvas.Children.Add(ship);
+            if (occurence == 0)
+            {
+                BitmapImage bi3 = new BitmapImage();
+                bi3.BeginInit();
+                bi3.UriSource = new Uri(resourcePath("shipExplose1.png"), UriKind.Absolute);
+                bi3.EndInit();
+                ship.Stretch = Stretch.Fill;
+                ship.Source = bi3;
+
+            }
+
+            if (occurence == 1)
+            {
+                BitmapImage bi3 = new BitmapImage();
+                bi3.BeginInit();
+                bi3.UriSource = new Uri(resourcePath("shipExplose2.png"), UriKind.Absolute);
+                bi3.EndInit();
+                ship.Stretch = Stretch.Fill;
+                ship.Source = bi3;
+
+            }
+
+            if (occurence == 3)
+            {
+                BitmapImage bi3 = new BitmapImage();
+                bi3.BeginInit();
+                bi3.UriSource = new Uri(resourcePath("shipExplose3.png"), UriKind.Absolute);
+                bi3.EndInit();
+                ship.Stretch = Stretch.Fill;
+                ship.Source = bi3;
+            }
+
+            if (occurence == 4)
+            {
+                BitmapImage bi3 = new BitmapImage();
+                bi3.BeginInit();
+                bi3.UriSource = new Uri(resourcePath("shipExplose4.png"), UriKind.Absolute);
+                bi3.EndInit();
+                ship.Stretch = Stretch.Fill;
+                ship.Source = bi3;
+            }
+
+            occurence++;
+
+            if (occurence > 4)
+            {
+                occurence = 0;
+
+                if (life > 0)
+                {
+
+                    life -= 1;
+                }
+
+                if (life < 0)
+                    gameOver();
+
+
+
+                if (life == 1)
+                {
+                    BitmapImage bi3 = new BitmapImage();
+                    bi3.BeginInit();
+                    bi3.UriSource = new Uri(resourcePath("shipPB.png"), UriKind.Absolute);
+                    bi3.EndInit();
+                    ship.Stretch = Stretch.Fill;
+                    ship.Source = bi3;
+                }
+                else
+                {
+                    BitmapImage bi3 = new BitmapImage();
+                    bi3.BeginInit();
+                    bi3.UriSource = new Uri(resourcePath("shipB.png"), UriKind.Absolute);
+                    bi3.EndInit();
+                    ship.Stretch = Stretch.Fill;
+                    ship.Source = bi3;
+                }
+
+                foward.Start();
+                allyExplo.Stop();
+            }
+
+        }
+
+        private void gameOver()
+        {
+            //KEYLENISTHEBEST
+        }
+
+        //Another meaning for after?
+        private void dead(Image ship)
+        {
+            //myCanvas.Children.Add(ship);
+            foward.Stop();
+
+            allyExplo.Start();
 
         }
 
@@ -564,10 +590,9 @@ namespace shipTest
                    (list.ElementAt(i).getEnemy().ActualHeight + getLocation(list.ElementAt(i).getEnemy()).Y) > getLocation(ship).Y)
                 {
                     myCanvas.Children.Remove(list.ElementAt(i).getEnemy());
-                    Console.WriteLine("\nI HIT YOU");
                     list.Remove(list.ElementAt(i));
                     touch = true;
-                    myCanvas.Children.Remove(ship);
+                    //myCanvas.Children.Remove(ship);
                 }
             }
             return touch;
@@ -601,7 +626,7 @@ namespace shipTest
                     {
                         update.Stop();
                         foward.Stop();
-                        explosionTimer.Stop();
+                        enemyExplo.Stop();
                         pause = true;
                         pauseWindow(pause);
                     }
@@ -609,7 +634,7 @@ namespace shipTest
                     {
                         update.Start();
                         foward.Start();
-                        explosionTimer.Start();
+                        enemyExplo.Start();
                         pause = false;
                         unPause();
                     }
@@ -618,7 +643,7 @@ namespace shipTest
         }
 
         private void pauseWindow(bool display)
-        {        
+        {
             Application.Current.MainWindow.Opacity = .20;
             /*Canvas.SetTop(pauseImg, myCanvas.Height);
             Canvas.SetLeft(pauseImg, myCanvas.Width);   */
@@ -627,14 +652,9 @@ namespace shipTest
 
         private void unPause()
         {
-            Application.Current.MainWindow.Opacity = 1;            
+            Application.Current.MainWindow.Opacity = 1;
 
 
-        }
-        private void setLocation(Image obj, Point objLocation)
-        {
-            Canvas.SetLeft(obj, objLocation.X);
-            Canvas.SetRight(obj, objLocation.Y);
         }
 
         private void setLocation(Rectangle obj, double top, double bottom, double left, double right)
@@ -652,12 +672,6 @@ namespace shipTest
         private static Point getLocation(Image obj)
         {
             return new Point(Canvas.GetLeft(obj), Canvas.GetTop(obj));
-        }
-
-        private static void setLocation(Rectangle rec, Vector vec)
-        {
-            Canvas.SetLeft(rec, vec.X);
-            Canvas.SetTop(rec, vec.Y);
         }
 
         private string resourcePath(string creature)
@@ -684,22 +698,6 @@ namespace shipTest
             path = path.Substring(path.IndexOf(":") + 2);
             path = System.IO.Path.Combine(path, ("Sound\\" + music));
             return path;
-        }
-
-        private Rectangle createMovement(Rectangle ennemy)
-        {
-
-
-            //Console.WriteLine("Creation of an ennemy (single)");
-
-            myCanvas.Children.Remove(ennemy);
-            ennemy.Width = 30;
-            ennemy.Height = 30;
-            ennemy.Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(resourcePath("enemyD1.png"), UriKind.Absolute)) };
-            myCanvas.Children.Add(ennemy);
-
-
-            return ennemy;
         }
 
         private Rectangle updateSprite(Rectangle ennemy)
@@ -749,5 +747,5 @@ namespace shipTest
             }
             return points;
         }
-    }       
+    }
 }
