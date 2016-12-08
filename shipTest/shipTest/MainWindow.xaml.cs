@@ -56,7 +56,7 @@ namespace shipTest
         private int life = 2;
         private Rectangle[] shipLife = new Rectangle[2];
 
-        int score = 0;
+        private int score = 0;
 
 
 
@@ -68,6 +68,9 @@ namespace shipTest
         private List<Point> exploLoc;
         private Rectangle pauseScreen = new Rectangle();
 
+        LevelTwo lvl2;
+        LevelOne lvl1;
+
         private SoundPlayer shootSound;
         private SoundPlayer explosionSound;
         //MediaElement musicBG;
@@ -77,7 +80,9 @@ namespace shipTest
 
             InitializeComponent();
 
-            gameStart();
+            mainMenu();
+
+            //gameStart();
 
         }
 
@@ -90,8 +95,6 @@ namespace shipTest
             makeItRainLvl();
 
             initializeMusic();
-
-            initializeVariable();
 
             initializeLife();
         }
@@ -162,6 +165,10 @@ namespace shipTest
         {
             Canvas.SetTop(lifeLb, myCanvas.Height / 1.1);
 
+            lvl1 = new LevelOne(myCanvas);
+            if (enemyList.Count == 0)
+                lvl2 = new LevelTwo(myCanvas);
+
             //Start in the middle of the screen
             newLocX = this.Width / 2;
 
@@ -198,6 +205,9 @@ namespace shipTest
 
             //If a key is pressed the handler shipMove will run
             KeyDown += shipMove;
+
+            if (enemyList.Count == 0)
+                enemyList = lvl1.run();
 
         }
 
@@ -430,12 +440,7 @@ namespace shipTest
         {
 
             shootPause++;
-            Console.WriteLine(enemyList.Count);
-
-            if (enemyList.Count == 0)
-            {
-                makeItRainLvl();
-            }
+            Console.WriteLine(enemyList.Count);          
 
             moveAndShoot();
 
@@ -698,21 +703,6 @@ namespace shipTest
             path = path.Substring(path.IndexOf(":") + 2);
             path = System.IO.Path.Combine(path, ("Sound\\" + music));
             return path;
-        }
-
-        private Rectangle updateSprite(Rectangle ennemy)
-        {
-
-            /*Rectangle rec = new Rectangle();
-            myCanvas.Children.Remove(ennemy);
-            //Console.WriteLine("UPDATE SPRITE!");
-
-            rec.Width = 30;
-            rec.Height = 30;*/
-            ennemy.Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(resourcePath("enemyD2.png"), UriKind.Absolute)) };
-
-            //myCanvas.Children.Add(rec);
-            return ennemy;
         }
 
         private int collision(Rectangle bullet, List<Ennemy> ennemy)

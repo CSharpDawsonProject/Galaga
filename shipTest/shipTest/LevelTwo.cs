@@ -11,10 +11,12 @@ namespace shipTest
 {
     class LevelTwo : ILevel
     {
+        bool finish = false;
+        Canvas myCanvas;
         List<Ennemy> enemy;
-        public LevelTwo()
+        public LevelTwo(Canvas c)
         {
-
+            myCanvas = c;
 
         }
 
@@ -41,23 +43,29 @@ namespace shipTest
         {
             foreach (Ennemy rec in list)
             {
-                if (Canvas.GetTop(rec.getEnemy()) > 1000) { 
-                Canvas.SetTop(rec.getEnemy(), 0);
+                if (Canvas.GetTop(rec.getEnemy()) > 1000)
+                {
+                    Canvas.SetTop(rec.getEnemy(), 0);
 
 
                     //pepe was here
 
-                if (rec is GreenAlien)
-                {
-                     
-                    Canvas.SetLeft(rec.getEnemy(), 50 );
-                    Canvas.SetTop(rec.getEnemy(), ((20) + (Math.Sin( 0.06) * 100)));
+                    if (rec is GreenAlien)
+                    {
 
-                }//pepe out
-            }else
-               Canvas.SetTop(rec.getEnemy(), Canvas.GetTop(rec.getEnemy()) + 2);
+                        Canvas.SetLeft(rec.getEnemy(), 50);
+                        Canvas.SetTop(rec.getEnemy(), ((20) + (Math.Sin(0.06) * 100)));
+
+                    }//pepe out
+                }
+                else
+                    Canvas.SetTop(rec.getEnemy(), Canvas.GetTop(rec.getEnemy()) + 2);
             }
             return list;
+        }
+        public bool finishGame()
+        {
+            return finish;
         }
 
         private List<Ennemy> normalGame(List<Ennemy> enemyList, Canvas myCanvas)
@@ -65,7 +73,7 @@ namespace shipTest
             enemyList = new List<Ennemy>(30);
             myCanvas.Width = myCanvas.Width;
             myCanvas.Height = myCanvas.Height;
-             
+
             int numEnnemy = 0;
             double spaceBetween = myCanvas.Width / 2 - 250;
             bool once = true;
@@ -158,7 +166,7 @@ namespace shipTest
 
                     myCanvas.Children.Add(enemyList.ElementAt(i).getEnemy());
 
-                    
+
                     if (numEnnemy < 9)
                     {
                         Canvas.SetTop(enemyList.ElementAt(i).getEnemy(), height);
@@ -209,6 +217,5 @@ namespace shipTest
         }
     }
 }
-    
 
-        
+
