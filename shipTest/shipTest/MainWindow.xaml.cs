@@ -53,8 +53,8 @@ namespace shipTest
         private bool pause = false;
 
         private int occurence = 0;
-        private int life = 2;
-        private Rectangle[] shipLife = new Rectangle[2];
+        private int life;
+        private Rectangle[] shipLife;
 
         private int score = 0;
 
@@ -79,10 +79,14 @@ namespace shipTest
         {
 
             InitializeComponent();
+            if (enemyList.Count != 0)
+            {
+                for (int i = 0; i < enemyList.Count; i++)
+                    myCanvas.Children.Remove(enemyList.ElementAt(i).getEnemy());
 
-            //mainMenu();
-
-            gameStart();
+                enemyList = null;
+            }
+            mainMenu();           
 
         }
 
@@ -101,7 +105,6 @@ namespace shipTest
 
         private void initializeLife()
         {
-            int space = 0;
 
             for (int i = 0; i < shipLife.Length; i++)
             {
@@ -115,16 +118,20 @@ namespace shipTest
                                                                             UriKind.Absolute))
                     };
 
+                    Canvas.SetTop(rect, Canvas.GetTop(lifeImg) + 30);
+                    Canvas.SetLeft(rect, Canvas.GetLeft(lifeImg) + 100);
                 }
                 else
+                {
                     rect.Fill = new ImageBrush
                     {
                         ImageSource = new BitmapImage(new Uri(resourcePath("shipPB.png"),
                                                                         UriKind.Absolute))
                     };
 
-                Canvas.SetTop(rect, Canvas.GetTop(lifeLb));
-                Canvas.SetLeft(rect, Canvas.GetLeft(lifeLb) + (space += 50));
+                    Canvas.SetTop(rect, Canvas.GetTop(lifeImg) + 30);
+                    Canvas.SetLeft(rect, Canvas.GetLeft(lifeImg) + 150);
+                }
 
                 rect.Height = 40;
                 rect.Width = 40;
@@ -163,7 +170,16 @@ namespace shipTest
          */
         private void initializeVariable()
         {
-            Canvas.SetTop(lifeLb, myCanvas.Height / 1.1);
+            life = 2;
+            shipLife = new Rectangle[2];
+            
+            Canvas.SetTop(scoreImg, 0);
+            Canvas.SetLeft(scoreImg, 3);
+            Canvas.SetLeft(scoreLb, Canvas.GetLeft(scoreImg) + 120);
+            Canvas.SetTop(scoreLb, Canvas.GetTop(scoreImg)+30);
+
+            Canvas.SetTop(lifeImg, myCanvas.Height / 1.15);
+            Canvas.SetLeft(lifeImg, Canvas.GetLeft(scoreImg));
 
             lvl1 = new LevelOne(myCanvas);
            
@@ -199,6 +215,8 @@ namespace shipTest
             foward.Interval = TimeSpan.FromMilliseconds(3.3);
 
             foward.Start();
+
+
 
             //bulletList is made for the ship only
             bulletList = new List<Rectangle>();
@@ -418,7 +436,7 @@ namespace shipTest
                     if (points > 0)
                     {
                         //change the score label
-                        scoreLb.Content = "Score: " + (score += points);
+                        scoreLb.Content = "" + (score += points);
 
                         myCanvas.Children.Remove(bulletList.ElementAt(i));
                         bulletList.RemoveAt(i);
@@ -475,6 +493,7 @@ namespace shipTest
                     collide = true;
                     invulnerable = 0;
                     dead(ship);
+                  
                 }
 
             enemyList = updateNextStep(enemyList);
@@ -535,12 +554,10 @@ namespace shipTest
                 {
 
                     life -= 1;
-                }
+                    myCanvas.Children.Remove(shipLife[life]);
+                    shipLife[life] = null;
 
-                if (life < 0)
-                    gameOver();
-
-
+                }               
 
                 if (life == 1)
                 {
@@ -561,6 +578,7 @@ namespace shipTest
                     ship.Source = bi3;
                 }
 
+                
                 foward.Start();
                 allyExplo.Stop();
             }
@@ -569,16 +587,36 @@ namespace shipTest
 
         private void gameOver()
         {
-            //KEYLENISTHEBEST
+            foward.Stop();
+            update.Stop();
+            allyExplo.Stop();
+            Application.Current.MainWindow.Opacity = .40;
+            gameOverImg.Visibility = Visibility.Visible;
+
+            gameOverImg.Width = 300;
+            gameOverImg.Height = 300;
+            Canvas.SetZIndex(gameOverImg, 5);
+            Canvas.SetTop(gameOverImg, myCanvas.Height / 3);
+            Canvas.SetLeft(gameOverImg, myCanvas.Width / 3);
+
+            Application.Current.MainWindow.Opacity = 1;
+
+           
+            mainMenu();
+
         }
 
-        //Another meaning for after?
+
         private void dead(Image ship)
         {
-            //myCanvas.Children.Add(ship);
             foward.Stop();
 
             allyExplo.Start();
+
+            if (life <= 0)
+                gameOver();
+
+
 
         }
 
@@ -651,14 +689,20 @@ namespace shipTest
         private void pauseWindow(bool display)
         {
             Application.Current.MainWindow.Opacity = .20;
-            /*Canvas.SetTop(pauseImg, myCanvas.Height);
-            Canvas.SetLeft(pauseImg, myCanvas.Width);   */
 
+            pauseImg.Visibility = Visibility.Visible;
+
+            pauseImg.Width = 300;
+            pauseImg.Height = 300;
+            Canvas.SetZIndex(pauseImg, 5);
+            Canvas.SetTop(pauseImg, myCanvas.Height / 3);
+            Canvas.SetLeft(pauseImg, myCanvas.Width / 3);
         }
 
         private void unPause()
         {
             Application.Current.MainWindow.Opacity = 1;
+            pauseImg.Visibility = Visibility.Hidden;
         }
 
         private void setLocation(Image obj, Point objLocation)
@@ -742,5 +786,7 @@ namespace shipTest
             }
             return points;
         }
+
+        
     }
 }

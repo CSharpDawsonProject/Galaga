@@ -7,13 +7,14 @@ using System.Windows.Controls;
 
 namespace shipTest
 {
-    class LevelOne : ILevel
+    class LevelOne
     {
         List<Ennemy> enemy;
         Canvas myCanvas;
         bool nextStep = true;
         double angle = 0;
         double pos = 50;
+        bool finish = false;
 
         public LevelOne(Canvas c)
         {
@@ -25,23 +26,23 @@ namespace shipTest
         {
 
             List<Ennemy> enemy = new List<Ennemy>();
-            enemy = normalGame(enemy);
+            enemy = normalGame(enemy, myCanvas);
 
             return enemy;
         }
 
         public List<Ennemy> updateGame(List<Ennemy> alien)
         {
-            
+
             if (alien.Count != 0 && !nextStep)
-                alien = updateRain(alien);               
+                alien = updateRain(alien);
             else
                 nextStep = true;
 
             if (nextStep)
             {
-                if(alien.Count == 0 && !nextStep)
-                alien = normalGame(alien);
+                if (alien.Count == 0 && !nextStep)
+                    alien = normalGame(alien, myCanvas);
 
                 alien = updateNextStep(alien);
             }
@@ -67,16 +68,16 @@ namespace shipTest
                     Canvas.SetLeft(list.ElementAt(0).getEnemy(), pos += 2);
                     Canvas.SetTop(list.ElementAt(0).getEnemy(), ((200) + (Math.Sin(angle += 0.06) * 100)));
 
-                    if (pos > myCanvas.Width/0.5)
+                    if (pos > myCanvas.Width / 0.5)
                     {
-                        Console.WriteLine("Angle: " + angle + "\tpos: " + pos + "\tGetTop: " + 
+                        Console.WriteLine("Angle: " + angle + "\tpos: " + pos + "\tGetTop: " +
                             Canvas.GetTop(list.ElementAt(0).getEnemy()) + "\tGetLeft: " + Canvas.GetLeft(list.ElementAt(0).getEnemy()));
                         pos = 0;
                         angle = 0;
                     }
                 }
             }
-        
+
             return list;
         }
 
@@ -88,10 +89,17 @@ namespace shipTest
                 else
                     Canvas.SetTop(rec.getEnemy(), Canvas.GetTop(rec.getEnemy()) + 2);
 
+            if (list.Count == 0) finish = true;
+
             return list;
         }
 
-        private List<Ennemy> normalGame(List<Ennemy> enemyList)
+        public bool finishGame()
+        {
+            return finish;
+        }
+
+        private List<Ennemy> normalGame(List<Ennemy> enemyList, Canvas myCanvas)
         {
             enemyList = new List<Ennemy>(40);
             myCanvas.Width = myCanvas.Width;

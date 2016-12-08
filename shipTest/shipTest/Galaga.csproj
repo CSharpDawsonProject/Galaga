@@ -63,7 +63,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="EnnemyShoot.cs" />
-    <Compile Include="ILevel.cs" />
     <Compile Include="LevelOne.cs" />
     <Compile Include="LevelThree.cs" />
     <Compile Include="LevelTwo.cs" />

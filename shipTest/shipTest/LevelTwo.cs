@@ -9,7 +9,7 @@ using System.Windows.Media.Imaging;
 
 namespace shipTest
 {
-    class LevelTwo : ILevel
+    class LevelTwo
     {
         bool finish = false;
         Canvas myCanvas;
