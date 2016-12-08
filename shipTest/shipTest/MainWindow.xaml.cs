@@ -80,9 +80,9 @@ namespace shipTest
 
             InitializeComponent();
 
-            mainMenu();
+            //mainMenu();
 
-            //gameStart();
+            gameStart();
 
         }
 
@@ -92,9 +92,9 @@ namespace shipTest
 
             exploLoc = new List<Point>();
 
-            makeItRainLvl();
-
             initializeMusic();
+
+            initializeVariable();
 
             initializeLife();
         }
@@ -166,8 +166,8 @@ namespace shipTest
             Canvas.SetTop(lifeLb, myCanvas.Height / 1.1);
 
             lvl1 = new LevelOne(myCanvas);
-            if (enemyList.Count == 0)
-                lvl2 = new LevelTwo(myCanvas);
+           
+            lvl2 = new LevelTwo(myCanvas);
 
             //Start in the middle of the screen
             newLocX = this.Width / 2;
@@ -460,6 +460,7 @@ namespace shipTest
 
             }
 
+            setLocation(ship, new Point(newLocX, 0));
 
             if (collide)
                 invulnerable++;
@@ -658,8 +659,12 @@ namespace shipTest
         private void unPause()
         {
             Application.Current.MainWindow.Opacity = 1;
+        }
 
-
+        private void setLocation(Image obj, Point objLocation)
+        {
+            Canvas.SetLeft(obj, objLocation.X);
+            Canvas.SetRight(obj, objLocation.Y);
         }
 
         private void setLocation(Rectangle obj, double top, double bottom, double left, double right)
